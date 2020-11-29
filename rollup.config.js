@@ -6,11 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import transformPaths from 'ts-transform-paths';
 import nodeExternals from 'rollup-plugin-node-externals';
 import del from 'rollup-plugin-delete';
-import copy from './js/loftyshaky/shared/plugins/rollup-plugin-copy';
-
-import { CopyBuild } from './js/copy_build';
-
-const copy_build = new CopyBuild();
+import copy from './node_modules/@loftyshaky/shared/js/shared/plugins/rollup-plugin-copy';
 
 const config = {
     input: 'src/ts/index.ts',
@@ -64,7 +60,6 @@ const config = {
                     dest: 'build',
                 }],
                 hook: 'writeBundle',
-                callback_end: copy_build.copy,
             },
         ),
     ],

@@ -52,7 +52,7 @@ export class Reload {
             soft_paths?: string[];
             all_tabs_paths?: string[];
             one_tab_paths?: string[];
-        },
+        } = {},
     ): void => {
         const hard_final = hard
             ? this.check_if_matched_filename(

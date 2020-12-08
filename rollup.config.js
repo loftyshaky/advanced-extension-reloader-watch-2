@@ -6,18 +6,23 @@ import resolve from '@rollup/plugin-node-resolve';
 import transformPaths from 'ts-transform-paths';
 import nodeExternals from 'rollup-plugin-node-externals';
 import del from 'rollup-plugin-delete';
-import copy from './node_modules/@loftyshaky/shared/js/shared/plugins/rollup-plugin-copy';
+import { terser } from 'rollup-plugin-terser';
+
+const copy = require('./node_modules/@loftyshaky/shared/js/package/plugins/rollup-plugin-copy');
+const { Terser } = require('./node_modules/@loftyshaky/shared/js/package/terser');
+
+const terserInst = new Terser();
 
 const config = {
     input: 'src/ts/index.ts',
     output: [{
-        file: 'build/index.js',
+        file: 'dist/index.js',
         format: 'cjs',
         exports: 'named',
         sourcemap: false,
         intro: 'const chrome = {runtime: {id: 1}};',
     }],
-    treeshake: true,
+    treeshake: process.env.mode === 'production',
     watch: {
         clearScreen: false,
     },
@@ -51,17 +56,20 @@ const config = {
         resolve(),
         nodeExternals(),
         del({
-            targets: 'build',
+            targets: 'dist',
         }),
         copy(
             {
                 targets: [{
                     src: 'package.json',
-                    dest: 'build',
+                    dest: 'dist',
                 }],
                 hook: 'writeBundle',
             },
         ),
+        process.env.mode === 'production'
+            ? terser(terserInst.config)
+            : undefined,
     ],
 };
 

@@ -1,12 +1,25 @@
 import { isNil } from 'lodash';
 import nodeWatch from 'node-watch';
-import io from 'socket.io';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 export class Reload {
     private port: number = 7220;
     private watch_paths: string[] = ['src'];
 
-    private server: any;
+    private httpserver = createServer();
+    private io = new Server(
+        this.httpserver,
+        {
+            cors: {
+                origin: [
+                    'chrome-extension://jmgjodjcbfmghjnoeadfbgopeneoefia',
+                    'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae',
+                ],
+            },
+        },
+    );
+
     private changed_files: string[] = [];
 
     public constructor(obj: any) {
@@ -14,7 +27,7 @@ export class Reload {
             this,
             obj,
         );
-        this.server = io.listen(this.port);
+        this.httpserver.listen(this.port);
     }
 
     public watch = (
@@ -27,11 +40,13 @@ export class Reload {
         nodeWatch(
             this.watch_paths,
             { recursive: true },
-            (e, file_path: string) => {
-                this.changed_files.push(file_path);
+            (e, file_path: string | undefined): void => {
+                if (!isNil(file_path)) {
+                    this.changed_files.push(file_path);
 
-                if (!isNil(callback)) {
-                    callback();
+                    if (!isNil(callback)) {
+                        callback();
+                    }
                 }
             },
         );
@@ -82,7 +97,7 @@ export class Reload {
                 },
             );
 
-        this.server.sockets.emit(
+        this.io.sockets.emit(
             'reload_app',
             {
                 hard: hard_final,

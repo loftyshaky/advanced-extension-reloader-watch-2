@@ -3,9 +3,12 @@ import nodeWatch from 'node-watch';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
+// eslint-disable-next-line import/extensions
+import { Options } from './interfaces';
+
 export class Reload {
     private port: number = 7220;
-    private watch_paths: string[] = ['src'];
+    private watch_path: string = 'src';
 
     private httpserver = createServer();
     private io = new Server(
@@ -38,7 +41,7 @@ export class Reload {
         } = {},
     ): void => {
         nodeWatch(
-            this.watch_paths,
+            this.watch_path,
             { recursive: true },
             (e, file_path: string | undefined): void => {
                 if (!isNil(file_path)) {
@@ -52,23 +55,15 @@ export class Reload {
         );
     };
 
-    public reload = (
-        {
-            hard = true,
-            all_tabs = false,
-            hard_paths = [],
-            soft_paths = [],
-            all_tabs_paths = [],
-            one_tab_paths = [],
-        }: {
-            hard?: boolean;
-            all_tabs?: boolean;
-            hard_paths?: string[];
-            soft_paths?: string[];
-            all_tabs_paths?: string[];
-            one_tab_paths?: string[];
-        } = {},
-    ): void => {
+    public reload = ({
+        ext_id,
+        hard = true,
+        all_tabs = false,
+        hard_paths = [],
+        soft_paths = [],
+        all_tabs_paths = [],
+        one_tab_paths = [],
+    }: Options = {}): void => {
         const hard_final = hard
             ? this.check_if_matched_filename(
                 {
@@ -96,10 +91,10 @@ export class Reload {
                     paths: all_tabs_paths,
                 },
             );
-
         this.io.sockets.emit(
             'reload_app',
             {
+                ext_id,
                 hard: hard_final,
                 all_tabs: all_tabs_final,
             },

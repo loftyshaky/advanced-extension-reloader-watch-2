@@ -16,8 +16,8 @@ export class Reload {
         {
             cors: {
                 origin: [
+                    'chrome-extension://ffhljpfecjcfjdaneehmhdgplkaafnbb',
                     'chrome-extension://jmgjodjcbfmghjnoeadfbgopeneoefia',
-                    'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae',
                 ],
             },
         },

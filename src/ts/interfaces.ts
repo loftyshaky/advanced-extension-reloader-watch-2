@@ -1,5 +1,5 @@
 export interface Options {
-    ext_id?: string;
+    ext_id?: string | false;
     hard?: boolean;
     all_tabs?: boolean;
     hard_paths?: string[];

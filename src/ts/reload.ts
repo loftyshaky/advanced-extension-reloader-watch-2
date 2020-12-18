@@ -56,7 +56,7 @@ export class Reload {
     };
 
     public reload = ({
-        ext_id,
+        ext_id = false,
         hard = true,
         all_tabs = false,
         hard_paths = [],

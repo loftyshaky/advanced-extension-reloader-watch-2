@@ -15,22 +15,29 @@ const terserInst = new Terser();
 
 const config = {
     input: 'src/ts/index.ts',
-    output: [{
-        file: 'dist/index.js',
-        format: 'cjs',
-        exports: 'named',
-        sourcemap: false,
-        intro: 'const chrome = {runtime: {id: 1}};',
-    }],
+    output: [
+        {
+            file: 'dist/index.js',
+            format: 'cjs',
+            exports: 'named',
+            sourcemap: false,
+            intro: 'const chrome = {runtime: {id: 1}};',
+        },
+    ],
     treeshake: process.env.mode === 'production',
     watch: {
         clearScreen: false,
     },
-    external: [
-        'supports-color',
-        'bufferutil',
-        'utf-8-validate',
-    ],
+    onwarn(warning, warn) {
+        if (
+            warning.code !== 'CIRCULAR_DEPENDENCY' &&
+            warning.code === 'NON_EXISTENT_EXPORT' &&
+            !warning.source.includes('\\interfaces\\')
+        ) {
+            warn(warning);
+        }
+    },
+    external: ['supports-color', 'bufferutil', 'utf-8-validate'],
     plugins: [
         replace({
             'window.location.protocol': 'null',
@@ -39,10 +46,7 @@ const config = {
             "require('supports-color')": 'null',
             "require('bufferutil')": 'null',
             "require('utf-8-validate')": 'null',
-            delimiters: [
-                '',
-                '',
-            ],
+            delimiters: ['', ''],
         }),
         typescript2({
             rollupCommonJSResolveHack: true,
@@ -58,18 +62,16 @@ const config = {
         del({
             targets: 'dist',
         }),
-        copy(
-            {
-                targets: [{
+        copy({
+            targets: [
+                {
                     src: 'package.json',
                     dest: 'dist',
-                }],
-                hook: 'writeBundle',
-            },
-        ),
-        process.env.mode === 'production'
-            ? terser(terserInst.config)
-            : undefined,
+                },
+            ],
+            hook: 'writeBundle',
+        }),
+        process.env.mode === 'production' ? terser(terserInst.config) : undefined,
     ],
 };
 

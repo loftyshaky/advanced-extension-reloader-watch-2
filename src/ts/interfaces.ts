@@ -2,8 +2,8 @@ export interface Options {
     ext_id?: string | false;
     hard?: boolean;
     all_tabs?: boolean;
-    hard_paths?: string[];
-    soft_paths?: string[];
-    all_tabs_paths?: string[];
-    one_tab_paths?: string[];
+    hard_dirs?: string[];
+    soft_dirs?: string[];
+    all_tabs_dirs?: string[];
+    one_tab_dirs?: string[];
 }

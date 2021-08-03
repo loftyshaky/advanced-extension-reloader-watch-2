@@ -6,6 +6,7 @@ export default () => {
 
     we.runtime.onMessageExternal.addListener((msg: any): void => {
         const msg_str: string = msg.msg;
+
         if (msg_str === 'reload_extension_u6Pgzb39sN0') {
             we.runtime.reload();
         }

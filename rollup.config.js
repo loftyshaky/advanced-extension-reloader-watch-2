@@ -14,12 +14,11 @@ const { Terser } = require('./node_modules/@loftyshaky/shared/js/package/terser'
 const terserInst = new Terser();
 
 const config = {
-    input: 'src/ts/index.ts',
+    input: ['src/ts/reload.ts', 'src/ts/listen.ts'],
     output: [
         {
-            file: 'dist/index.js',
+            dir: 'dist',
             format: 'cjs',
-            exports: 'named',
             sourcemap: false,
             intro: 'const chrome = {runtime: {id: 1}};',
         },

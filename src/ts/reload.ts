@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
 
-export class Reload {
+export default class Reload {
     private port: number = 7220;
     private watch_dir: string = 'src';
 
@@ -46,6 +46,7 @@ export class Reload {
     public reload = ({
         ext_id = false,
         hard = true,
+        hardfull = false,
         all_tabs = false,
         hard_dirs = [],
         soft_dirs = [],
@@ -74,6 +75,7 @@ export class Reload {
         this.io.sockets.emit('reload_app', {
             ext_id,
             hard: hard_final,
+            hardfull,
             all_tabs: all_tabs_final,
         });
 

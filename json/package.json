@@ -1,0 +1,14 @@
+{
+    "name": "advanced-extension-reloader-watch-2",
+    "description": "-",
+    "version": "0.0.2",
+    "author": "loftyshaky",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/loftyshaky/advanced-extension-reloader-watch-2.git"
+    },
+    "scripts": {
+        "pub": "npm publish --access public"
+    }
+}

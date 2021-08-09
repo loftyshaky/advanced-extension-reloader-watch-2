@@ -1,17 +1,8 @@
 {
-    "name": "advanced-extension-reloader-watch-2",
-    "description": "-",
-    "version": "0.0.1",
-    "author": "loftyshaky",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/loftyshaky/advanced-extension-reloader-watch-2.git"
-    },
     "scripts": {
         "dev": "rollup -c --watch --environment mode:development",
         "prod": "rollup -c --environment mode:production",
-        "pub": "npm publish --folder dist --access public"
+        "format": "prettier --config .prettierrc.js src/**/*.ts --write"
     },
     "devDependencies": {
         "@loftyshaky/shared": "0.0.27",

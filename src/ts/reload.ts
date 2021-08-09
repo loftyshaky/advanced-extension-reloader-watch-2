@@ -46,7 +46,6 @@ export default class Reload {
     public reload = ({
         ext_id = false,
         hard = true,
-        hardfull = false,
         all_tabs = false,
         hard_dirs = [],
         soft_dirs = [],
@@ -75,7 +74,6 @@ export default class Reload {
         this.io.sockets.emit('reload_app', {
             ext_id,
             hard: hard_final,
-            hardfull,
             all_tabs: all_tabs_final,
         });
 

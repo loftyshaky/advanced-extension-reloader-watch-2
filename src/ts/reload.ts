@@ -14,8 +14,8 @@ export default class Reload {
     private io = new Server(this.httpserver, {
         cors: {
             origin: [
-                'chrome-extension://ffhljpfecjcfjdaneehmhdgplkaafnbb',
-                'chrome-extension://jmgjodjcbfmghjnoeadfbgopeneoefia',
+                'chrome-extension://hmhmmmajoblhmohkmfjeoamhdpodihlg',
+                'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae',
             ],
         },
     });

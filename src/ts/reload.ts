@@ -47,6 +47,7 @@ export default class Reload {
         ext_id = false,
         hard = true,
         all_tabs = false,
+        play_sound = true,
         hard_dirs = [],
         soft_dirs = [],
         all_tabs_dirs = [],
@@ -75,6 +76,7 @@ export default class Reload {
             ext_id,
             hard: hard_final,
             all_tabs: all_tabs_final,
+            play_sound,
         });
 
         this.changed_files = [];

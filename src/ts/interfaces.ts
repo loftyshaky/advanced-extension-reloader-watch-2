@@ -1,5 +1,5 @@
 export interface Options {
-    ext_id?: string | false;
+    ext_id?: string;
     hard?: boolean;
     all_tabs?: boolean;
     play_sound?: boolean;

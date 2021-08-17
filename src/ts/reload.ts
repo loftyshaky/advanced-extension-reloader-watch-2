@@ -44,7 +44,7 @@ export default class Reload {
     };
 
     public reload = ({
-        ext_id = false,
+        ext_id,
         hard = true,
         all_tabs = false,
         play_sound = true,

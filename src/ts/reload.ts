@@ -47,7 +47,7 @@ export default class Reload {
         ext_id,
         hard = true,
         all_tabs = false,
-        play_sound = true,
+        play_sound = false,
         full_reload_timeout = 300,
         hard_dirs = [],
         soft_dirs = [],

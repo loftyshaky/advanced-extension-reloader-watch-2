@@ -4,8 +4,8 @@ export interface Options {
     all_tabs?: boolean;
     play_sound?: boolean;
     full_reload_timeout?: number;
-    hard_dirs?: string[];
-    soft_dirs?: string[];
-    all_tabs_dirs?: string[];
-    one_tab_dirs?: string[];
+    hard_paths?: string[];
+    soft_paths?: string[];
+    all_tabs_paths?: string[];
+    one_tab_paths?: string[];
 }

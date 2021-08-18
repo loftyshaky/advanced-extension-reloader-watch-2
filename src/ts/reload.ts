@@ -49,29 +49,29 @@ export default class Reload {
         all_tabs = false,
         play_sound = false,
         full_reload_timeout = 300,
-        hard_dirs = [],
-        soft_dirs = [],
-        all_tabs_dirs = [],
-        one_tab_dirs = [],
+        hard_paths = [],
+        soft_paths = [],
+        all_tabs_paths = [],
+        one_tab_paths = [],
     }: Options = {}): void => {
         const hard_final = hard
             ? this.check_if_matched_filename({
                   val: hard,
-                  paths: soft_dirs,
+                  paths: soft_paths,
               })
             : this.check_if_matched_filename({
                   val: hard,
-                  paths: hard_dirs,
+                  paths: hard_paths,
               });
 
         const all_tabs_final = all_tabs
             ? this.check_if_matched_filename({
                   val: all_tabs,
-                  paths: one_tab_dirs,
+                  paths: one_tab_paths,
               })
             : this.check_if_matched_filename({
                   val: all_tabs,
-                  paths: all_tabs_dirs,
+                  paths: all_tabs_paths,
               });
         this.io.sockets.emit('reload_app', {
             ext_id,

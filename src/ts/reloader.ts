@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
 
-export default class Reload {
+export default class Reloader {
     private port: number = 7220;
     private watch_dir: string = 'src';
 

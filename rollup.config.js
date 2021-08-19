@@ -13,14 +13,14 @@ const { Terser } = require('./node_modules/@loftyshaky/shared/js/package/terser'
 
 const terserInst = new Terser();
 
-const config = {
-    input: ['src/ts/reload.ts', 'src/ts/listen.ts'],
+const generate_config = (input, format, name, delete_dist) => ({
+    input,
     output: [
         {
-            dir: 'dist',
-            format: 'cjs',
+            dir: `dist/${format}`,
+            format,
+            name: format === 'umd' ? name : undefined,
             sourcemap: false,
-            intro: 'const chrome = {runtime: {id: 1}};',
         },
     ],
     treeshake: process.env.mode === 'production',
@@ -41,7 +41,6 @@ const config = {
         replace({
             'window.location.protocol': 'null',
             "document.querySelector('title');": 'null',
-            'window.': 'global.',
             "require('supports-color')": 'null',
             "require('bufferutil')": 'null',
             "require('utf-8-validate')": 'null',
@@ -58,9 +57,6 @@ const config = {
         }),
         resolve(),
         nodeExternals(),
-        del({
-            targets: 'dist',
-        }),
         copy({
             targets: [
                 {
@@ -71,7 +67,18 @@ const config = {
             hook: 'writeBundle',
         }),
         process.env.mode === 'production' ? terser(terserInst.config) : undefined,
+        ...[
+            delete_dist
+                ? del({
+                      targets: 'dist',
+                  })
+                : undefined,
+        ],
     ],
-};
+});
 
-export default config;
+export default [
+    generate_config(['src/ts/reloader.ts', 'src/ts/listener.ts'], 'es', undefined, true),
+    generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false),
+    generate_config('src/ts/listener.ts', 'umd', 'Listener', false),
+];

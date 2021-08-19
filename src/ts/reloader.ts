@@ -48,6 +48,7 @@ export default class Reloader {
         hard = true,
         all_tabs = false,
         play_sound = false,
+        after_enable_delay = 300,
         full_reload_timeout = 300,
         hard_paths = [],
         soft_paths = [],
@@ -78,6 +79,7 @@ export default class Reloader {
             hard: hard_final,
             all_tabs: all_tabs_final,
             play_sound,
+            after_enable_delay,
             full_reload_timeout,
         });
 

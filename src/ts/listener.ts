@@ -1,9 +1,9 @@
 export default class Listener {
-    private gl = typeof window === 'undefined' ? global : window;
+    private gl = self as any;
     private we =
-        typeof (this.gl as any).chrome !== 'undefined' && (this.gl as any).chrome.runtime
-            ? (this.gl as any).chrome
-            : (this.gl as any).browser;
+        typeof this.gl.chrome !== 'undefined' && (this.gl as any).chrome.runtime
+            ? this.gl.chrome
+            : this.gl.browser;
     private advanced_extension_reloader_id: string = 'u6Pgzb39sN0';
 
     public listen = () => {

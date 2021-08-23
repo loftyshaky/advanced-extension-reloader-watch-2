@@ -1,40 +1,18 @@
-'use strict';
-
-const chrome = {runtime: {id: 1}};
-
-var require$$0$1 = require('fs');
-var require$$1 = require('path');
-var require$$1$1 = require('util');
-var require$$0$2 = require('events');
-var require$$2 = require('os');
-var require$$2$1 = require('http');
-var require$$1$2 = require('zlib');
-var require$$0$5 = require('stream');
-var require$$1$3 = require('querystring');
-var require$$1$5 = require('url');
-var require$$0$3 = require('crypto');
-var require$$0$4 = require('tty');
-var require$$1$4 = require('https');
-var require$$3 = require('net');
-var require$$4 = require('tls');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0$1);
-var require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
-var require$$1__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$1$1);
-var require$$0__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$0$2);
-var require$$2__default = /*#__PURE__*/_interopDefaultLegacy(require$$2);
-var require$$2__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$2$1);
-var require$$1__default$2 = /*#__PURE__*/_interopDefaultLegacy(require$$1$2);
-var require$$0__default$4 = /*#__PURE__*/_interopDefaultLegacy(require$$0$5);
-var require$$1__default$3 = /*#__PURE__*/_interopDefaultLegacy(require$$1$3);
-var require$$1__default$5 = /*#__PURE__*/_interopDefaultLegacy(require$$1$5);
-var require$$0__default$2 = /*#__PURE__*/_interopDefaultLegacy(require$$0$3);
-var require$$0__default$3 = /*#__PURE__*/_interopDefaultLegacy(require$$0$4);
-var require$$1__default$4 = /*#__PURE__*/_interopDefaultLegacy(require$$1$4);
-var require$$3__default = /*#__PURE__*/_interopDefaultLegacy(require$$3);
-var require$$4__default = /*#__PURE__*/_interopDefaultLegacy(require$$4);
+import require$$0$1 from 'fs';
+import require$$1 from 'path';
+import require$$1$1 from 'util';
+import require$$0$2 from 'events';
+import require$$2 from 'os';
+import require$$2$1, { createServer as createServer$1 } from 'http';
+import require$$1$2 from 'zlib';
+import require$$0$5 from 'stream';
+import require$$1$3 from 'querystring';
+import require$$1$5 from 'url';
+import require$$0$3 from 'crypto';
+import require$$0$4 from 'tty';
+import require$$1$4 from 'https';
+import require$$3 from 'net';
+import require$$4 from 'tls';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -17288,9 +17266,9 @@ var lodash = lodash$1.exports;
 
 var watch$1 = {exports: {}};
 
-var fs$2 = require$$0__default['default'];
-var path$2 = require$$1__default['default'];
-var os$1 = require$$2__default['default'];
+var fs$2 = require$$0$1;
+var path$2 = require$$1;
+var os$1 = require$$2;
 
 function matchObject(item, str) {
   return Object.prototype.toString.call(item)
@@ -17367,9 +17345,9 @@ var is$2 = {
 
 var is_1 = is$2;
 
-var fs$1 = require$$0__default['default'];
-var os = require$$2__default['default'];
-var path$1 = require$$1__default['default'];
+var fs$1 = require$$0$1;
+var os = require$$2;
+var path$1 = require$$1;
 var is$1 = is_1;
 
 var IS_SUPPORT;
@@ -17483,10 +17461,10 @@ var hasNativeRecursive$1 = function hasNativeRecursive(fn) {
   stack.write(file);
 };
 
-var fs = require$$0__default['default'];
-var path = require$$1__default['default'];
-var util = require$$1__default$1['default'];
-var events = require$$0__default$1['default'];
+var fs = require$$0$1;
+var path = require$$1;
+var util = require$$1$1;
+var events = require$$0$2;
 
 var hasNativeRecursive = hasNativeRecursive$1;
 var is = is_1;
@@ -19024,7 +19002,7 @@ var mimeDb = require$$0;
  */
 
 var db = mimeDb;
-var extname = require$$1__default['default'].extname;
+var extname = require$$1.extname;
 
 /**
  * Module variables.
@@ -19451,7 +19429,7 @@ var base64id$2 = {exports: {}};
  * Module dependencies
  */
 
-var crypto = require$$0__default$2['default'];
+var crypto = require$$0$3;
 
 /**
  * Constructor
@@ -20956,7 +20934,7 @@ function useColors() {
 	// NB: In an Electron preload script, document will be defined but not fully
 	// initialized. Since we know we're in Chrome, we'll just detect this case
 	// explicitly
-	if (typeof window !== 'undefined' && commonjsGlobal.process && (commonjsGlobal.process.type === 'renderer' || commonjsGlobal.process.__nwjs)) {
+	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
 		return true;
 	}
 
@@ -20969,7 +20947,7 @@ function useColors() {
 	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
 	return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
 		// Is firebug? http://stackoverflow.com/a/398120/376773
-		(typeof window !== 'undefined' && commonjsGlobal.console && (commonjsGlobal.console.firebug || (commonjsGlobal.console.exception && commonjsGlobal.console.table))) ||
+		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
 		// Is firefox >= v31?
 		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
 		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
@@ -21118,8 +21096,8 @@ var node$5 = {exports: {}};
  */
 
 (function (module, exports) {
-const tty = require$$0__default$3['default'];
-const util = require$$1__default$1['default'];
+const tty = require$$0$4;
+const util = require$$1$1;
 
 /**
  * This is the Node.js implementation of `debug()`.
@@ -21394,7 +21372,7 @@ if (typeof process === 'undefined' || process.type === 'renderer' || process.bro
 
 var src$4 = src$5.exports;
 
-const EventEmitter$4 = require$$0__default$1['default'];
+const EventEmitter$4 = require$$0$2;
 const parser_v4 = lib$2;
 const parser_v3 = parserV3;
 const debug$5 = src$5.exports("engine:transport");
@@ -21506,7 +21484,7 @@ class Transport$2 extends EventEmitter$4 {
 var transport = Transport$2;
 
 const Transport$1 = transport;
-const zlib$1 = require$$1__default$2['default'];
+const zlib$1 = require$$1$2;
 const accepts = accepts$1;
 const debug$4 = src$5.exports("engine:polling");
 
@@ -21892,7 +21870,7 @@ class Polling$1 extends Transport$1 {
 var polling = Polling$1;
 
 const Polling = polling;
-const qs$1 = require$$1__default$3['default'];
+const qs$1 = require$$1$3;
 const rDoubleSlashes = /\\\\n/g;
 const rSlashes = /(\\)?\\n/g;
 
@@ -22102,7 +22080,7 @@ function polling$1(req) {
 
 var transports$1 = transports$2.exports;
 
-const EventEmitter$3 = require$$0__default$1['default'];
+const EventEmitter$3 = require$$0$2;
 const debug$2 = src$5.exports("engine:socket");
 
 class Socket$2 extends EventEmitter$3 {
@@ -23028,7 +23006,7 @@ var limiter = Limiter$1;
 
 'use strict';
 
-const zlib = require$$1__default$2['default'];
+const zlib = require$$1$2;
 
 const bufferUtil = bufferUtil$2.exports;
 const Limiter = limiter;
@@ -23655,7 +23633,7 @@ var validation = validation$1.exports;
 
 'use strict';
 
-const { Writable } = require$$0__default$4['default'];
+const { Writable } = require$$0$5;
 
 const PerMessageDeflate$3 = permessageDeflate;
 const {
@@ -24163,7 +24141,7 @@ function error(ErrorCtor, message, prefix, statusCode) {
 
 'use strict';
 
-const { randomFillSync } = require$$0__default$2['default'];
+const { randomFillSync } = require$$0$3;
 
 const PerMessageDeflate$2 = permessageDeflate;
 const { EMPTY_BUFFER: EMPTY_BUFFER$1 } = constants;
@@ -24978,13 +24956,13 @@ var extension = { format: format$2, parse: parse$4 };
 
 'use strict';
 
-const EventEmitter$2 = require$$0__default$1['default'];
-const https = require$$1__default$4['default'];
-const http = require$$2__default$1['default'];
-const net = require$$3__default['default'];
-const tls = require$$4__default['default'];
-const { randomBytes, createHash: createHash$1 } = require$$0__default$2['default'];
-const { URL } = require$$1__default$5['default'];
+const EventEmitter$2 = require$$0$2;
+const https = require$$1$4;
+const http = require$$2$1;
+const net = require$$3;
+const tls = require$$4;
+const { randomBytes, createHash: createHash$1 } = require$$0$3;
+const { URL } = require$$1$5;
 
 const PerMessageDeflate$1 = permessageDeflate;
 const Receiver = receiver;
@@ -25921,7 +25899,7 @@ function socketOnError$1() {
 
 'use strict';
 
-const { Duplex } = require$$0__default$4['default'];
+const { Duplex } = require$$0$5;
 
 /**
  * Emits the `'close'` event on a stream.
@@ -26087,9 +26065,9 @@ var stream = createWebSocketStream;
 
 'use strict';
 
-const EventEmitter$1 = require$$0__default$1['default'];
-const { createHash } = require$$0__default$2['default'];
-const { createServer, STATUS_CODES } = require$$2__default$1['default'];
+const EventEmitter$1 = require$$0$2;
+const { createHash } = require$$0$3;
+const { createServer, STATUS_CODES } = require$$2$1;
 
 const PerMessageDeflate = permessageDeflate;
 const WebSocket$1 = websocket;
@@ -27003,11 +26981,11 @@ var vary_1 = vary$1.exports;
 
 var lib = lib$1.exports;
 
-const qs = require$$1__default$3['default'];
-const parse = require$$1__default$5['default'].parse;
+const qs = require$$1$3;
+const parse = require$$1$5.parse;
 const base64id = base64id$2.exports;
 const transports = transports$2.exports;
-const EventEmitter = require$$0__default$1['default'].EventEmitter;
+const EventEmitter = require$$0$2.EventEmitter;
 const Socket$1 = socket$2;
 const debug$1 = src$5.exports("engine");
 const cookieMod = cookie;
@@ -27683,7 +27661,7 @@ function checkInvalidHeaderChar(val) {
  */
 
 (function (module, exports) {
-const http = require$$2__default$1['default'];
+const http = require$$2$1;
 const Server = server;
 
 /**
@@ -28533,7 +28511,7 @@ function useColors() {
 	// NB: In an Electron preload script, document will be defined but not fully
 	// initialized. Since we know we're in Chrome, we'll just detect this case
 	// explicitly
-	if (typeof window !== 'undefined' && commonjsGlobal.process && (commonjsGlobal.process.type === 'renderer' || commonjsGlobal.process.__nwjs)) {
+	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
 		return true;
 	}
 
@@ -28546,7 +28524,7 @@ function useColors() {
 	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
 	return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
 		// Is firebug? http://stackoverflow.com/a/398120/376773
-		(typeof window !== 'undefined' && commonjsGlobal.console && (commonjsGlobal.console.firebug || (commonjsGlobal.console.exception && commonjsGlobal.console.table))) ||
+		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
 		// Is firefox >= v31?
 		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
 		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
@@ -28695,8 +28673,8 @@ var node$3 = {exports: {}};
  */
 
 (function (module, exports) {
-const tty = require$$0__default$3['default'];
-const util = require$$1__default$1['default'];
+const tty = require$$0$4;
+const util = require$$1$1;
 
 /**
  * This is the Node.js implementation of `debug()`.
@@ -29653,7 +29631,7 @@ function useColors() {
 	// NB: In an Electron preload script, document will be defined but not fully
 	// initialized. Since we know we're in Chrome, we'll just detect this case
 	// explicitly
-	if (typeof window !== 'undefined' && commonjsGlobal.process && (commonjsGlobal.process.type === 'renderer' || commonjsGlobal.process.__nwjs)) {
+	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
 		return true;
 	}
 
@@ -29666,7 +29644,7 @@ function useColors() {
 	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
 	return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
 		// Is firebug? http://stackoverflow.com/a/398120/376773
-		(typeof window !== 'undefined' && commonjsGlobal.console && (commonjsGlobal.console.firebug || (commonjsGlobal.console.exception && commonjsGlobal.console.table))) ||
+		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
 		// Is firefox >= v31?
 		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
 		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
@@ -29815,8 +29793,8 @@ var node$1 = {exports: {}};
  */
 
 (function (module, exports) {
-const tty = require$$0__default$3['default'];
-const util = require$$1__default$1['default'];
+const tty = require$$0$4;
+const util = require$$1$1;
 
 /**
  * This is the Node.js implementation of `debug()`.
@@ -30096,7 +30074,7 @@ Object.defineProperty(client, "__esModule", { value: true });
 var Client_1 = client.Client = void 0;
 const socket_io_parser_1$1 = dist$1;
 const debugModule = src$1.exports;
-const url = require$$1__default$5['default'];
+const url = require$$1$5;
 const debug = debugModule("socket.io:client");
 class Client {
     /**
@@ -30359,7 +30337,7 @@ var typedEvents = {};
 "use strict";
 Object.defineProperty(typedEvents, "__esModule", { value: true });
 var StrictEventEmitter_1 = typedEvents.StrictEventEmitter = void 0;
-const events_1$1 = require$$0__default$1['default'];
+const events_1$1 = require$$0$2;
 /**
  * Strictly typed version of an `EventEmitter`. A `TypedEventEmitter` takes type
  * parameters for mappings of event names to event data types, and strictly
@@ -30682,7 +30660,7 @@ var __importDefault = (commonjsGlobal && commonjsGlobal.__importDefault) || func
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Socket = exports.RESERVED_EVENTS = void 0;
 const socket_io_parser_1 = dist$1;
-const url = require$$1__default$5['default'];
+const url = require$$1$5;
 const debug_1 = __importDefault(src$1.exports);
 const typed_events_1 = typedEvents;
 const base64id_1 = __importDefault(base64id$2.exports);
@@ -31580,7 +31558,7 @@ var dist = {};
 "use strict";
 Object.defineProperty(dist, "__esModule", { value: true });
 var Adapter_1 = dist.Adapter = void 0;
-const events_1 = require$$0__default$1['default'];
+const events_1 = require$$0$2;
 class Adapter extends events_1.EventEmitter {
     /**
      * In-memory adapter constructor.
@@ -31814,7 +31792,7 @@ class Adapter extends events_1.EventEmitter {
 }
 Adapter_1 = dist.Adapter = Adapter;
 
-var _from="socket.io@^4.1.3";var _id="socket.io@4.1.3";var _inBundle=false;var _integrity="sha512-tLkaY13RcO4nIRh1K2hT5iuotfTaIQw7cVIe0FUykN3SuQi0cm7ALxuyT5/CtDswOMWUzMGTibxYNx/gU7In+Q==";var _location="/socket.io";var _phantomChildren={ms:"2.1.2"};var _requested={type:"range",registry:true,raw:"socket.io@^4.1.3",name:"socket.io",escapedName:"socket.io",rawSpec:"^4.1.3",saveSpec:null,fetchSpec:"^4.1.3"};var _requiredBy=["/","/@types/socket.io"];var _resolved="https://registry.npmjs.org/socket.io/-/socket.io-4.1.3.tgz";var _shasum="d114328ef27ab31b889611792959c3fa6d502500";var _spec="socket.io@^4.1.3";var _where="D:\\Cloud\\Projects\\Advanced Extension Reloader Watch 2\\advanced-extension-reloader-watch-2";var bugs={url:"https://github.com/socketio/socket.io/issues"};var bundleDependencies=false;var contributors=[{name:"Guillermo Rauch",email:"rauchg@gmail.com"},{name:"Arnout Kazemier",email:"info@3rd-eden.com"},{name:"Vladimir Dronnikov",email:"dronnikov@gmail.com"},{name:"Einar Otto Stangvik",email:"einaros@gmail.com"}];var dependencies={"@types/cookie":"^0.4.0","@types/cors":"^2.8.10","@types/node":">=10.0.0",accepts:"~1.3.4",base64id:"~2.0.0",debug:"~4.3.1","engine.io":"~5.1.1","socket.io-adapter":"~2.3.1","socket.io-parser":"~4.0.4"};var deprecated=false;var description="node.js realtime framework server";var devDependencies={"@types/mocha":"^8.2.2","expect.js":"0.3.1",mocha:"^3.5.3",nyc:"^15.1.0",prettier:"^2.3.2",rimraf:"^3.0.2","socket.io-client":"4.1.3","socket.io-client-v2":"npm:socket.io-client@^2.4.0",superagent:"^6.1.0",supertest:"^6.1.3","ts-node":"^10.0.0",tsd:"^0.17.0",typescript:"^4.3.5"};var directories={doc:"docs/",example:"example/",lib:"lib/",test:"test/"};var engines={node:">=10.0.0"};var exports$1={"import":"./wrapper.mjs",require:"./dist/index.js"};var files=["dist/","client-dist/","wrapper.mjs","!**/*.tsbuildinfo"];var homepage="https://github.com/socketio/socket.io#readme";var keywords=["realtime","framework","websocket","tcp","events","socket","io"];var license="MIT";var main="./dist/index.js";var name="socket.io";var repository={type:"git",url:"git://github.com/socketio/socket.io.git"};var scripts={compile:"rimraf ./dist && tsc","format:check":"prettier --check \"lib/**/*.ts\" \"test/**/*.ts\"","format:fix":"prettier --write \"lib/**/*.ts\" \"test/**/*.ts\"",prepack:"npm run compile",test:"npm run format:check && npm run compile && npm run test:types && npm run test:unit","test:types":"tsd","test:unit":"nyc mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/socket.io.ts"};var tsd={directory:"test"};var type="commonjs";var types="./dist/index.d.ts";var version="4.1.3";var require$$16 = {_from:_from,_id:_id,_inBundle:_inBundle,_integrity:_integrity,_location:_location,_phantomChildren:_phantomChildren,_requested:_requested,_requiredBy:_requiredBy,_resolved:_resolved,_shasum:_shasum,_spec:_spec,_where:_where,bugs:bugs,bundleDependencies:bundleDependencies,contributors:contributors,dependencies:dependencies,deprecated:deprecated,description:description,devDependencies:devDependencies,directories:directories,engines:engines,exports:exports$1,files:files,homepage:homepage,keywords:keywords,license:license,main:main,name:name,repository:repository,scripts:scripts,tsd:tsd,type:type,types:types,version:version};
+var _from="socket.io@^4.1.3";var _id="socket.io@4.1.3";var _inBundle=false;var _integrity="sha512-tLkaY13RcO4nIRh1K2hT5iuotfTaIQw7cVIe0FUykN3SuQi0cm7ALxuyT5/CtDswOMWUzMGTibxYNx/gU7In+Q==";var _location="/socket.io";var _phantomChildren={ms:"2.1.2"};var _requested={type:"range",registry:true,raw:"socket.io@^4.1.3",name:"socket.io",escapedName:"socket.io",rawSpec:"^4.1.3",saveSpec:null,fetchSpec:"^4.1.3"};var _requiredBy=["/","/@types/socket.io"];var _resolved="https://registry.npmjs.org/socket.io/-/socket.io-4.1.3.tgz";var _shasum="d114328ef27ab31b889611792959c3fa6d502500";var _spec="socket.io@^4.1.3";var _where="D:\\Cloud\\Projects\\Advanced Extension Reloader Watch 2\\advanced-extension-reloader-watch-2";var bugs={url:"https://github.com/socketio/socket.io/issues"};var bundleDependencies=false;var contributors=[{name:"Guillermo Rauch",email:"rauchg@gmail.com"},{name:"Arnout Kazemier",email:"info@3rd-eden.com"},{name:"Vladimir Dronnikov",email:"dronnikov@gmail.com"},{name:"Einar Otto Stangvik",email:"einaros@gmail.com"}];var dependencies={"@types/cookie":"^0.4.0","@types/cors":"^2.8.10","@types/node":">=10.0.0",accepts:"~1.3.4",base64id:"~2.0.0",debug:"~4.3.1","engine.io":"~5.1.1","socket.io-adapter":"~2.3.1","socket.io-parser":"~4.0.4"};var deprecated=false;var description="node.js realtime framework server";var devDependencies={"@types/mocha":"^8.2.2","expect.js":"0.3.1",mocha:"^3.5.3",nyc:"^15.1.0",prettier:"^2.3.2",rimraf:"^3.0.2","socket.io-client":"4.1.3","socket.io-client-v2":"npm:socket.io-client@^2.4.0",superagent:"^6.1.0",supertest:"^6.1.3","ts-node":"^10.0.0",tsd:"^0.17.0",typescript:"^4.3.5"};var directories={doc:"docs/",example:"example/",lib:"lib/",test:"test/"};var engines={node:">=10.0.0"};var exports={"import":"./wrapper.mjs",require:"./dist/index.js"};var files=["dist/","client-dist/","wrapper.mjs","!**/*.tsbuildinfo"];var homepage="https://github.com/socketio/socket.io#readme";var keywords=["realtime","framework","websocket","tcp","events","socket","io"];var license="MIT";var main="./dist/index.js";var name="socket.io";var repository={type:"git",url:"git://github.com/socketio/socket.io.git"};var scripts={compile:"rimraf ./dist && tsc","format:check":"prettier --check \"lib/**/*.ts\" \"test/**/*.ts\"","format:fix":"prettier --write \"lib/**/*.ts\" \"test/**/*.ts\"",prepack:"npm run compile",test:"npm run format:check && npm run compile && npm run test:types && npm run test:unit","test:types":"tsd","test:unit":"nyc mocha --require ts-node/register --reporter spec --slow 200 --bail --timeout 10000 test/socket.io.ts"};var tsd={directory:"test"};var type="commonjs";var types="./dist/index.d.ts";var version="4.1.3";var require$$16 = {_from:_from,_id:_id,_inBundle:_inBundle,_integrity:_integrity,_location:_location,_phantomChildren:_phantomChildren,_requested:_requested,_requiredBy:_requiredBy,_resolved:_resolved,_shasum:_shasum,_spec:_spec,_where:_where,bugs:bugs,bundleDependencies:bundleDependencies,contributors:contributors,dependencies:dependencies,deprecated:deprecated,description:description,devDependencies:devDependencies,directories:directories,engines:engines,exports:exports,files:files,homepage:homepage,keywords:keywords,license:license,main:main,name:name,repository:repository,scripts:scripts,tsd:tsd,type:type,types:types,version:version};
 
 (function (module, exports) {
 "use strict";
@@ -31842,15 +31820,15 @@ var __importDefault = (commonjsGlobal && commonjsGlobal.__importDefault) || func
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Namespace = exports.Socket = exports.Server = void 0;
-const http = require$$2__default$1['default'];
-const fs_1 = require$$0__default['default'];
-const zlib_1 = require$$1__default$2['default'];
+const http = require$$2$1;
+const fs_1 = require$$0$1;
+const zlib_1 = require$$1$2;
 const accepts = accepts$1;
-const stream_1 = require$$0__default$4['default'];
-const path = require$$1__default['default'];
+const stream_1 = require$$0$5;
+const path = require$$1;
 const engine = engine_io$1.exports;
 const client_1 = client;
-const events_1 = require$$0__default$1['default'];
+const events_1 = require$$0$2;
 const namespace_1 = namespace$1;
 Object.defineProperty(exports, "Namespace", { enumerable: true, get: function () { return namespace_1.Namespace; } });
 const parent_namespace_1 = parentNamespace;
@@ -32352,11 +32330,11 @@ var io = /*@__PURE__*/getDefaultExportFromCjs(dist$2.exports);
 
 const {Server, Namespace, Socket} = io;
 
-class Reload {
+class Reloader {
     constructor(obj) {
         this.port = 7220;
         this.watch_dir = 'src';
-        this.httpserver = require$$2$1.createServer();
+        this.httpserver = createServer$1();
         this.io = new Server(this.httpserver, {
             cors: {
                 origin: [
@@ -32376,7 +32354,7 @@ class Reload {
                 }
             });
         };
-        this.reload = ({ ext_id, hard = true, all_tabs = false, play_sound = false, full_reload_timeout = 300, hard_paths = [], soft_paths = [], all_tabs_paths = [], one_tab_paths = [], } = {}) => {
+        this.reload = ({ ext_id, hard = true, all_tabs = false, play_sound = false, after_enable_delay = 300, full_reload_timeout = 300, hard_paths = [], soft_paths = [], all_tabs_paths = [], one_tab_paths = [], } = {}) => {
             const hard_final = hard
                 ? this.check_if_matched_filename({
                     val: hard,
@@ -32400,6 +32378,7 @@ class Reload {
                 hard: hard_final,
                 all_tabs: all_tabs_final,
                 play_sound,
+                after_enable_delay,
                 full_reload_timeout,
             });
             this.changed_files = [];
@@ -32416,4 +32395,4 @@ class Reload {
     }
 }
 
-module.exports = Reload;
+export { Reloader as default };

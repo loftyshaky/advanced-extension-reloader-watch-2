@@ -1,0 +1,1 @@
+A supplementary package for the [Advanced Extension Reloader](https://bit.ly/advanced-extension-reloader-github) browser extension.

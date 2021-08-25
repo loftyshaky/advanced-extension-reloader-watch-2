@@ -1,1 +1,8 @@
 node_modules
+dist/*
+!dist/es
+!dist/umd
+dist/es/*
+dist/umd/*
+!dist/es/listener.js
+!dist/umd/listener.js

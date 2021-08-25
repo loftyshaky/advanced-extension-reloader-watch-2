@@ -2,6 +2,7 @@ import { isNil } from 'lodash';
 import nodeWatch from 'node-watch';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { redBright } from 'colorette';
 
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
@@ -24,7 +25,17 @@ export default class Reloader {
 
     public constructor(obj: any) {
         Object.assign(this, obj);
-        this.httpserver.listen(this.port);
+
+        const io = this.httpserver.listen(this.port);
+
+        io.on('error', () => {
+            // eslint-disable-next-line no-console
+            console.log(
+                redBright('[Advanced Extension Reloader Watch 2 error] Port already in use.'),
+            );
+
+            process.exit(1);
+        });
     }
 
     public watch = ({
@@ -32,15 +43,30 @@ export default class Reloader {
     }: {
         callback?: () => void;
     } = {}): void => {
-        nodeWatch(this.watch_dir, { recursive: true }, (e, file_path: string | undefined): void => {
-            if (!isNil(file_path)) {
-                this.changed_files.push(file_path);
+        try {
+            nodeWatch(
+                this.watch_dir,
+                { recursive: true },
+                (e, file_path: string | undefined): void => {
+                    if (!isNil(file_path)) {
+                        this.changed_files.push(file_path);
 
-                if (!isNil(callback)) {
-                    callback();
-                }
-            }
-        });
+                        if (!isNil(callback)) {
+                            callback();
+                        }
+                    }
+                },
+            );
+        } catch (error_object) {
+            // eslint-disable-next-line no-console
+            console.log(
+                redBright(
+                    "[Advanced Extension Reloader Watch 2 error] Directory provided in the watch_dir property doesn't exist.",
+                ),
+            );
+
+            process.exit(1);
+        }
     };
 
     public reload = ({

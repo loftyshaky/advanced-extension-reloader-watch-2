@@ -32330,6 +32330,90 @@ var io = /*@__PURE__*/getDefaultExportFromCjs(dist$2.exports);
 
 const {Server, Namespace, Socket} = io;
 
+const env = process.env;
+
+const isDisabled = "NO_COLOR" in env;
+const isForced = "FORCE_COLOR" in env;
+const isWindows = process.platform === "win32";
+
+const isCompatibleTerminal =
+    process.stdout != null &&
+    process.stdout.isTTY &&
+    env.TERM &&
+    env.TERM !== "dumb";
+
+const isCI =
+    "CI" in env &&
+    ("GITHUB_ACTIONS" in env || "GITLAB_CI" in env || "CIRCLECI" in env);
+
+let enabled =
+    !isDisabled && (isForced || isWindows || isCompatibleTerminal || isCI);
+
+const raw = (open, close, searchRegex, replaceValue) => (s) =>
+  enabled
+    ? open +
+      (~(s += "").indexOf(close, 4) // skip opening \x1b[
+        ? s.replace(searchRegex, replaceValue)
+        : s) +
+      close
+    : s;
+
+const init = (open, close) => {
+  return raw(
+    `\x1b[${open}m`,
+    `\x1b[${close}m`,
+    new RegExp(`\\x1b\\[${close}m`, "g"),
+    `\x1b[${open}m`
+  )
+};
+
+const options = Object.defineProperty({}, "enabled", {
+  get: () => enabled,
+  set: (value) => (enabled = value),
+});
+
+const reset = init(0, 0);
+const bold = raw("\x1b[1m", "\x1b[22m", /\x1b\[22m/g, "\x1b[22m\x1b[1m");
+const dim = raw("\x1b[2m", "\x1b[22m", /\x1b\[22m/g, "\x1b[22m\x1b[2m");
+const italic = init(3, 23);
+const underline = init(4, 24);
+const inverse = init(7, 27);
+const hidden = init(8, 28);
+const strikethrough = init(9, 29);
+const black = init(30, 39);
+const red = init(31, 39);
+const green = init(32, 39);
+const yellow = init(33, 39);
+const blue = init(34, 39);
+const magenta = init(35, 39);
+const cyan = init(36, 39);
+const white = init(37, 39);
+const gray = init(90, 39);
+const bgBlack = init(40, 49);
+const bgRed = init(41, 49);
+const bgGreen = init(42, 49);
+const bgYellow = init(43, 49);
+const bgBlue = init(44, 49);
+const bgMagenta = init(45, 49);
+const bgCyan = init(46, 49);
+const bgWhite = init(47, 49);
+const blackBright = init(90, 39);
+const redBright = init(91, 39);
+const greenBright = init(92, 39);
+const yellowBright = init(93, 39);
+const blueBright = init(94, 39);
+const magentaBright = init(95, 39);
+const cyanBright = init(96, 39);
+const whiteBright = init(97, 39);
+const bgBlackBright = init(100, 49);
+const bgRedBright = init(101, 49);
+const bgGreenBright = init(102, 49);
+const bgYellowBright = init(103, 49);
+const bgBlueBright = init(104, 49);
+const bgMagentaBright = init(105, 49);
+const bgCyanBright = init(106, 49);
+const bgWhiteBright = init(107, 49);
+
 class Reloader {
     constructor(obj) {
         this.port = 7220;
@@ -32345,14 +32429,21 @@ class Reloader {
         });
         this.changed_files = [];
         this.watch = ({ callback, } = {}) => {
-            nodeWatch(this.watch_dir, { recursive: true }, (e, file_path) => {
-                if (!lodash$1.exports.isNil(file_path)) {
-                    this.changed_files.push(file_path);
-                    if (!lodash$1.exports.isNil(callback)) {
-                        callback();
+            try {
+                nodeWatch(this.watch_dir, { recursive: true }, (e, file_path) => {
+                    if (!lodash$1.exports.isNil(file_path)) {
+                        this.changed_files.push(file_path);
+                        if (!lodash$1.exports.isNil(callback)) {
+                            callback();
+                        }
                     }
-                }
-            });
+                });
+            }
+            catch (error_object) {
+                // eslint-disable-next-line no-console
+                console.log(redBright("[Advanced Extension Reloader Watch 2 error] Directory provided in the watch_dir property doesn't exist."));
+                process.exit(1);
+            }
         };
         this.reload = ({ ext_id, hard = true, all_tabs = false, play_sound = false, after_enable_delay = 300, full_reload_timeout = 300, hard_paths = [], soft_paths = [], all_tabs_paths = [], one_tab_paths = [], } = {}) => {
             const hard_final = hard
@@ -32391,7 +32482,12 @@ class Reloader {
             return val;
         };
         Object.assign(this, obj);
-        this.httpserver.listen(this.port);
+        const io = this.httpserver.listen(this.port);
+        io.on('error', () => {
+            // eslint-disable-next-line no-console
+            console.log(redBright('[Advanced Extension Reloader Watch 2 error] Port already in use.'));
+            process.exit(1);
+        });
     }
 }
 

@@ -16,7 +16,8 @@ export default class Reloader {
         cors: {
             origin: [
                 'chrome-extension://hmhmmmajoblhmohkmfjeoamhdpodihlg',
-                'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae',
+                'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae', // chrome
+                'chrome-extension://bcpgohifjmmcoiemghdamamlkbcbgifg', // edge
             ],
         },
     });

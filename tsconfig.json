@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "build",
+        "outDir": "dist",
         "baseUrl": "src",
         "target": "es6",
         "module": "esnext",
@@ -11,5 +11,5 @@
         "declaration": true
     },
     "include": ["src"],
-    "exclude": ["node_modules", "build"]
+    "exclude": ["node_modules", "dist"]
 }

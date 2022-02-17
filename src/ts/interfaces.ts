@@ -3,8 +3,7 @@ export interface Options {
     hard?: boolean;
     all_tabs?: boolean;
     play_sound?: boolean;
-    after_enable_delay?: number;
-    full_reload_timeout?: number;
+    after_reload_delay?: number;
     hard_paths?: string[];
     soft_paths?: string[];
     all_tabs_paths?: string[];

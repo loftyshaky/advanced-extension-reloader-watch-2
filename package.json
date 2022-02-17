@@ -5,7 +5,7 @@
         "format": "prettier --config .prettierrc.js src/**/*.ts --write"
     },
     "devDependencies": {
-        "@loftyshaky/shared": "0.0.27",
+        "@loftyshaky/shared": "0.0.37",
         "@rollup/plugin-commonjs": "^20.0.0",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.0.4",

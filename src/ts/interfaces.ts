@@ -4,6 +4,7 @@ export interface Options {
     all_tabs?: boolean;
     play_sound?: boolean;
     after_reload_delay?: number;
+    manifest_path?: boolean | string;
     hard_paths?: string[];
     soft_paths?: string[];
     all_tabs_paths?: string[];

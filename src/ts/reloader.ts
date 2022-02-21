@@ -1,4 +1,6 @@
-import { isNil } from 'lodash';
+import path from 'path';
+import { isNil, isEmpty } from 'lodash';
+import fs from 'fs-extra';
 import nodeWatch from 'node-watch';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -76,11 +78,47 @@ export default class Reloader {
         all_tabs = false,
         play_sound = false,
         after_reload_delay = 0,
+        manifest_path = false,
         hard_paths = [],
         soft_paths = [],
         all_tabs_paths = [],
         one_tab_paths = [],
-    }: Options = {}): void => {
+    }: Options = {}): boolean => {
+        const check_if_manifest_json_is_valid = (): boolean => {
+            let manifest_json_is_valid: boolean = true;
+
+            if (manifest_path !== false) {
+                const manifest_path_absolute: string =
+                    typeof manifest_path === 'string'
+                        ? manifest_path
+                        : path.resolve(this.watch_dir, 'manifest.json');
+                const files: string[] = isEmpty(this.changed_files)
+                    ? [manifest_path_absolute]
+                    : this.changed_files;
+
+                const changed_manifest_json: boolean = files.includes(manifest_path_absolute);
+
+                if (changed_manifest_json) {
+                    const manifest_json: any = fs.readJsonSync(manifest_path_absolute, {
+                        throws: false,
+                    });
+
+                    manifest_json_is_valid = manifest_json !== null;
+
+                    if (!manifest_json_is_valid) {
+                        // eslint-disable-next-line no-console
+                        console.log(
+                            redBright(
+                                '[Advanced Extension Reloader Watch 2 error] manifest.json is not valid. Extension was not reloaded.',
+                            ),
+                        );
+                    }
+                }
+            }
+
+            return manifest_json_is_valid;
+        };
+
         const hard_final = hard
             ? this.check_if_matched_filename({
                   val: hard,
@@ -100,15 +138,22 @@ export default class Reloader {
                   val: all_tabs,
                   paths: all_tabs_paths,
               });
-        this.io.sockets.emit('reload_app', {
-            ext_id,
-            hard: hard_final,
-            all_tabs: all_tabs_final,
-            play_sound,
-            after_reload_delay,
-        });
+
+        const manifest_json_is_valid: boolean = check_if_manifest_json_is_valid();
+
+        if (manifest_json_is_valid) {
+            this.io.sockets.emit('reload_app', {
+                ext_id,
+                hard: hard_final,
+                all_tabs: all_tabs_final,
+                play_sound,
+                after_reload_delay,
+            });
+        }
 
         this.changed_files = [];
+
+        return manifest_json_is_valid;
     };
 
     private check_if_matched_filename = ({

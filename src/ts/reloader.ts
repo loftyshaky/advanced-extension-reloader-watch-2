@@ -25,6 +25,8 @@ export default class Reloader {
     });
 
     private changed_files: string[] = [];
+    private first_reload_completed = false;
+    private reload_attempts: number = 0;
 
     public constructor(obj: any) {
         Object.assign(this, obj);
@@ -52,7 +54,7 @@ export default class Reloader {
                 { recursive: true },
                 (e, file_path: string | undefined): void => {
                     if (!isNil(file_path)) {
-                        this.changed_files.push(file_path);
+                        this.changed_files.push(path.resolve(file_path));
 
                         if (!isNil(callback)) {
                             callback();
@@ -84,74 +86,102 @@ export default class Reloader {
         all_tabs_paths = [],
         one_tab_paths = [],
     }: Options = {}): boolean => {
-        const check_if_manifest_json_is_valid = (): boolean => {
-            let manifest_json_is_valid: boolean = true;
+        let manifest_json_is_valid: boolean = false;
 
-            if (manifest_path !== false) {
-                const manifest_path_absolute: string =
-                    typeof manifest_path === 'string'
-                        ? manifest_path
-                        : path.resolve(this.watch_dir, 'manifest.json');
-                const files: string[] = isEmpty(this.changed_files)
-                    ? [manifest_path_absolute]
-                    : this.changed_files;
+        if (
+            isEmpty(this.changed_files) &&
+            this.first_reload_completed &&
+            this.reload_attempts <= 50
+        ) {
+            this.reload_attempts += 1;
 
-                const changed_manifest_json: boolean = files.includes(manifest_path_absolute);
+            setTimeout(() => {
+                this.reload({
+                    ext_id,
+                    hard,
+                    all_tabs,
+                    play_sound,
+                    after_reload_delay,
+                    manifest_path,
+                    hard_paths,
+                    soft_paths,
+                    all_tabs_paths,
+                    one_tab_paths,
+                });
+            }, 100);
+        } else {
+            this.first_reload_completed = true;
+            this.reload_attempts = 0;
 
-                if (changed_manifest_json) {
-                    const manifest_json: any = fs.readJsonSync(manifest_path_absolute, {
-                        throws: false,
-                    });
+            // eslint-disable-next-line no-loop-func
+            const check_if_manifest_json_is_valid = (): boolean => {
+                let manifest_json_is_valid_2: boolean = true;
 
-                    manifest_json_is_valid = manifest_json !== null;
+                if (manifest_path !== false) {
+                    const manifest_path_absolute: string =
+                        typeof manifest_path === 'string'
+                            ? manifest_path
+                            : path.resolve(this.watch_dir, 'manifest.json');
+                    const files: string[] = isEmpty(this.changed_files)
+                        ? [manifest_path_absolute]
+                        : this.changed_files;
+                    const changed_manifest_json: boolean = files.includes(manifest_path_absolute);
 
-                    if (!manifest_json_is_valid) {
-                        // eslint-disable-next-line no-console
-                        console.log(
-                            redBright(
-                                '[Advanced Extension Reloader Watch 2 error] manifest.json is not valid. Extension was not reloaded.',
-                            ),
-                        );
+                    if (changed_manifest_json) {
+                        const manifest_json: any = fs.readJsonSync(manifest_path_absolute, {
+                            throws: false,
+                        });
+
+                        manifest_json_is_valid_2 = manifest_json !== null;
+
+                        if (!manifest_json_is_valid_2) {
+                            // eslint-disable-next-line no-console
+                            console.log(
+                                redBright(
+                                    '[Advanced Extension Reloader Watch 2 error] manifest.json is not valid. Extension was not reloaded.',
+                                ),
+                            );
+                        }
                     }
                 }
+
+                return manifest_json_is_valid_2;
+            };
+
+            const hard_final = hard
+                ? this.check_if_matched_filename({
+                      val: hard,
+                      paths: soft_paths,
+                  })
+                : this.check_if_matched_filename({
+                      val: hard,
+                      paths: hard_paths,
+                  });
+
+            const all_tabs_final = all_tabs
+                ? this.check_if_matched_filename({
+                      val: all_tabs,
+                      paths: one_tab_paths,
+                  })
+                : this.check_if_matched_filename({
+                      val: all_tabs,
+                      paths: all_tabs_paths,
+                  });
+
+            manifest_json_is_valid = check_if_manifest_json_is_valid();
+
+            if (manifest_json_is_valid) {
+                this.io.sockets.emit('reload_app', {
+                    ext_id,
+                    hard: hard_final,
+                    all_tabs: all_tabs_final,
+                    play_sound,
+                    after_reload_delay,
+                });
             }
 
-            return manifest_json_is_valid;
-        };
-
-        const hard_final = hard
-            ? this.check_if_matched_filename({
-                  val: hard,
-                  paths: soft_paths,
-              })
-            : this.check_if_matched_filename({
-                  val: hard,
-                  paths: hard_paths,
-              });
-
-        const all_tabs_final = all_tabs
-            ? this.check_if_matched_filename({
-                  val: all_tabs,
-                  paths: one_tab_paths,
-              })
-            : this.check_if_matched_filename({
-                  val: all_tabs,
-                  paths: all_tabs_paths,
-              });
-
-        const manifest_json_is_valid: boolean = check_if_manifest_json_is_valid();
-
-        if (manifest_json_is_valid) {
-            this.io.sockets.emit('reload_app', {
-                ext_id,
-                hard: hard_final,
-                all_tabs: all_tabs_final,
-                play_sound,
-                after_reload_delay,
-            });
+            this.changed_files = [];
         }
-
-        this.changed_files = [];
 
         return manifest_json_is_valid;
     };

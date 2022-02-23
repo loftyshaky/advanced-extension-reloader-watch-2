@@ -6,7 +6,7 @@
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
-        "@loftyshaky/shared": "0.0.39",
+        "@loftyshaky/shared": "0.0.40",
         "@rollup/plugin-commonjs": "^21.0.1",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.1.3",

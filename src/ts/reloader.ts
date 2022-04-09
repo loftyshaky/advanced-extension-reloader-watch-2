@@ -135,6 +135,10 @@ export default class Reloader {
                         manifest_json_is_valid_2 = manifest_json !== null;
 
                         if (!manifest_json_is_valid_2) {
+                            if (play_sound) {
+                                this.play_error_notification();
+                            }
+
                             // eslint-disable-next-line no-console
                             console.log(
                                 redBright(
@@ -184,6 +188,10 @@ export default class Reloader {
         }
 
         return manifest_json_is_valid;
+    };
+
+    private play_error_notification = (): void => {
+        this.io.sockets.emit('play_error_notification');
     };
 
     private check_if_matched_filename = ({

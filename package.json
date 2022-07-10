@@ -2,7 +2,8 @@
     "scripts": {
         "dev": "rollup -c --watch --environment mode:development",
         "prod": "rollup -c --environment mode:production",
-        "format": "prettier --config .prettierrc.js src/**/*.ts --write"
+        "format": "prettier --config .prettierrc.js src/**/*.ts --write",
+        "lint": "npx eslint . --fix"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

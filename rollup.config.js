@@ -8,8 +8,8 @@ import nodeExternals from 'rollup-plugin-node-externals';
 import del from 'rollup-plugin-delete';
 import { terser } from 'rollup-plugin-terser';
 
-const copy = require('./node_modules/@loftyshaky/shared/js/package/plugins/rollup-plugin-copy');
-const { Terser } = require('./node_modules/@loftyshaky/shared/js/package/terser');
+const copy = require('./node_modules/@loftyshaky/shared-app/js/package/plugins/rollup-plugin-copy');
+const { Terser } = require('./node_modules/@loftyshaky/shared-app/js/package/terser');
 
 const terserInst = new Terser();
 

@@ -3,7 +3,7 @@
         "dev": "rollup -c --watch --environment mode:development",
         "prod": "rollup -c --environment mode:production",
         "format": "prettier --config .prettierrc.js src/**/*.ts --write",
-        "lint": "npx eslint . --fix"
+        "lint": "npx eslint **/*.js **/*.ts --fix"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.18.2",

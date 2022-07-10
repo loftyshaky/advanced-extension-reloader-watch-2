@@ -82,7 +82,7 @@ export default class Reloader {
         hard = true,
         all_tabs = false,
         play_sound = false,
-        after_reload_delay = 0,
+        after_reload_delay = 1000,
         manifest_path = false,
         hard_paths = [],
         soft_paths = [],

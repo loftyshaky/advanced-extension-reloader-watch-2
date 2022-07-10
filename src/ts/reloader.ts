@@ -1,7 +1,7 @@
 import path from 'path';
 import { isNil, isEmpty } from 'lodash';
 import fs from 'fs-extra';
-import nodeWatch from 'node-watch';
+import chokidar from 'chokidar';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { redBright } from 'colorette';
@@ -49,19 +49,22 @@ export default class Reloader {
         callback?: () => void;
     } = {}): void => {
         try {
-            nodeWatch(
-                this.watch_dir,
-                { recursive: true },
-                (e, file_path: string | undefined): void => {
-                    if (!isNil(file_path)) {
-                        this.changed_files.push(path.resolve(file_path));
+            const watch_callback = (file_path: string | undefined): void => {
+                if (!isNil(file_path)) {
+                    this.changed_files.push(path.resolve(file_path));
 
-                        if (!isNil(callback)) {
-                            callback();
-                        }
+                    if (!isNil(callback)) {
+                        callback();
                     }
-                },
-            );
+                }
+            };
+
+            const watcher = chokidar.watch(this.watch_dir, { ignoreInitial: true });
+
+            watcher
+                .on('add', watch_callback)
+                .on('change', watch_callback)
+                .on('unlink', watch_callback);
         } catch (error_object) {
             // eslint-disable-next-line no-console
             console.log(

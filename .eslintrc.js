@@ -2,7 +2,7 @@ const _ = require('lodash');
 const restrictedGlobals = require('confusing-browser-globals');
 
 const naming_convention_exceptions = {
-    regex: '^(btn:save|marginBottom|minWidth|maxWidth|marginLeft|marginRight|scrollTop|backgroundColor|marginInlineStart|componentDidMount|componentWillUnmount|componentDidUpdate|componentDidCatch|getDerivedStateFromError|enforceActions|recurseEverything|currentWindow|windowTypes|defaultProps|windowId|useAsButton|autoReposition|lockOpacity|showAlways|childList|backgroundImage|attributeFilter|saveAs|tabId|sendResponse|unsharpAmount|unsharpRadius|unsharpThreshold|onDragEnter|onDragLeave|onDrop|onDragOver|lastModified|objectFit|objectPosition|ROUNDING_MODE|tabIndex|onClick|onKeyDown|lineWrapping|lineNumbers|htmlMode|singleQuote|jsxSingleQuote|tabWidth|printWidth|semi|trailingComma|endOfLine|__html|webPreferences|nodeIntegration|contextIsolation|responseHeaders|defaultViewport|executablePath|ignoreDefaultArgs|browserWSEndpoint|waitUntil|ignoreInitial)$',
+    regex: '^(btn:save|globalThis|marginBottom|minWidth|maxWidth|marginLeft|marginRight|scrollTop|backgroundColor|marginInlineStart|componentDidMount|componentWillUnmount|componentDidUpdate|componentDidCatch|getDerivedStateFromError|enforceActions|recurseEverything|currentWindow|windowTypes|defaultProps|windowId|useAsButton|autoReposition|lockOpacity|showAlways|childList|backgroundImage|attributeFilter|saveAs|tabId|sendResponse|unsharpAmount|unsharpRadius|unsharpThreshold|onDragEnter|onDragLeave|onDrop|onDragOver|lastModified|objectFit|objectPosition|ROUNDING_MODE|tabIndex|onClick|onKeyDown|lineWrapping|lineNumbers|htmlMode|singleQuote|jsxSingleQuote|tabWidth|printWidth|semi|trailingComma|endOfLine|__html|webPreferences|nodeIntegration|contextIsolation|responseHeaders|defaultViewport|executablePath|ignoreDefaultArgs|browserWSEndpoint|waitUntil|ignoreInitial)$',
     match: false,
 };
 
@@ -170,8 +170,6 @@ module.exports = {
         },
     ],
     globals: {
-        self: false,
-        document: false,
         env: false,
         l: false,
         n: false,
@@ -180,16 +178,13 @@ module.exports = {
         sa: false,
         sb: false,
         sab: false,
-        browser: false,
+        we: false,
         page: false,
-        show_dependencicies_from_other_page_loaded_into_this_page_alert: false,
         show_err_ribbon: false,
         err: false,
         err_async: false,
         throw_err: false,
         throw_err_obj: false,
         err_obj: false,
-        doc: true,
-        doc_state: false,
     },
 };

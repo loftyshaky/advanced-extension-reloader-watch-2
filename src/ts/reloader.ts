@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import chokidar from 'chokidar';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import kill from 'kill-port';
 import { redBright } from 'colorette';
 
 // eslint-disable-next-line import/extensions
@@ -31,15 +32,20 @@ export default class Reloader {
     public constructor(obj: any) {
         Object.assign(this, obj);
 
-        const io = this.httpserver.listen(this.port);
+        // kill process running on port
+        kill(this.port, 'tcp').then(() => {
+            const io = this.httpserver.listen(this.port);
 
-        io.on('error', () => {
-            // eslint-disable-next-line no-console
-            console.log(
-                redBright('[Advanced Extension Reloader Watch 2 error] Port already in use.'),
-            );
+            //> probably never get to this point since now I use kill-port above
+            io.on('error', () => {
+                // eslint-disable-next-line no-console
+                console.log(
+                    redBright('[Advanced Extension Reloader Watch 2 error] Port already in use.'),
+                );
 
-            process.exit(1);
+                process.exit(1);
+            });
+            //< probably never get to this point since now I use kill-port above
         });
     }
 

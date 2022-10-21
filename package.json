@@ -12,6 +12,7 @@
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^13.3.0",
         "@rollup/plugin-replace": "^4.0.0",
+        "@types/kill-port": "^2.0.0",
         "@types/lodash": "^4.14.182",
         "@types/node": "^18.0.3",
         "@types/socket.io": "^3.0.2",
@@ -44,6 +45,7 @@
         "colorette": "^2.0.19",
         "confusing-browser-globals": "^1.0.11",
         "fs-extra": "^10.1.0",
+        "kill-port": "^2.0.1",
         "lodash": "^4.17.21",
         "node-watch": "^0.7.3",
         "socket.io": "^4.5.1"

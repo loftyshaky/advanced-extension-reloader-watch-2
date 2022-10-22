@@ -47,7 +47,6 @@
         "fs-extra": "^10.1.0",
         "kill-port": "^2.0.1",
         "lodash": "^4.17.21",
-        "node-watch": "^0.7.3",
         "socket.io": "^4.5.1"
     }
 }

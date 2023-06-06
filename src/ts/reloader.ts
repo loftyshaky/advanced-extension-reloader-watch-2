@@ -37,11 +37,15 @@ export default class Reloader {
             const io = this.httpserver.listen(this.port);
 
             //> probably never get to this point since now I use kill-port above
-            io.on('error', () => {
+            io.on('error', (error) => {
                 // eslint-disable-next-line no-console
                 console.log(
-                    redBright('[Advanced Extension Reloader Watch 2 error] Port already in use.'),
+                    redBright(
+                        `[Advanced Extension Reloader Watch 2 error] Unable to connect to the port ${this.port}.`,
+                    ),
                 );
+                // eslint-disable-next-line no-console
+                console.log(error);
 
                 process.exit(1);
             });

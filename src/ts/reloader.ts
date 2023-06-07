@@ -41,7 +41,7 @@ export default class Reloader {
                 // eslint-disable-next-line no-console
                 console.log(
                     redBright(
-                        `[Advanced Extension Reloader Watch 2 error] Unable to connect to the port ${this.port}.`,
+                        `[Advanced Extension Reloader Watch 2 error] Unable to connect to port ${this.port}.`,
                     ),
                 );
                 // eslint-disable-next-line no-console

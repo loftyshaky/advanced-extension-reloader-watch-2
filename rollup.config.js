@@ -63,6 +63,10 @@ const generate_config = (input, format, name, delete_dist) => ({
                     src: 'json/package.json',
                     dest: 'dist',
                 },
+                {
+                    src: 'LICENSE.md',
+                    dest: 'dist',
+                },
             ],
             hook: 'writeBundle',
         }),

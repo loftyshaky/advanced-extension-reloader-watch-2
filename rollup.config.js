@@ -1,3 +1,5 @@
+import path from 'path';
+
 import replace from '@rollup/plugin-replace';
 import typescript2 from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
@@ -7,13 +9,14 @@ import transformPaths from 'ts-transform-paths';
 import nodeExternals from 'rollup-plugin-node-externals';
 import del from 'rollup-plugin-delete';
 import { terser } from 'rollup-plugin-terser';
+import license from 'rollup-plugin-license';
 
 const copy = require('./node_modules/@loftyshaky/shared-app/js/package/plugins/rollup-plugin-copy');
 const { Terser } = require('./node_modules/@loftyshaky/shared-app/js/package/terser');
 
 const terserInst = new Terser();
 
-const generate_config = (input, format, name, delete_dist) => ({
+const generate_config = (input, format, name, delete_dist, generate_dependencies_file) => ({
     input,
     output: [
         {
@@ -78,11 +81,25 @@ const generate_config = (input, format, name, delete_dist) => ({
                   })
                 : undefined,
         ],
+        ...[
+            generate_dependencies_file
+                ? license({
+                      cwd: path.join(__dirname),
+                      banner: "Copyright <%= moment().format('YYYY') %>",
+                      thirdParty: {
+                          includePrivate: true,
+                          output: {
+                              file: path.join(__dirname, 'dist', 'dependencies.txt'),
+                          },
+                      },
+                  })
+                : undefined,
+        ],
     ],
 });
 
 export default [
-    generate_config(['src/ts/reloader.ts', 'src/ts/listener.ts'], 'es', undefined, true),
-    generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false),
-    generate_config('src/ts/listener.ts', 'umd', 'Listener', false),
+    generate_config(['src/ts/reloader.ts', 'src/ts/listener.ts'], 'es', undefined, true, true),
+    generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false, false),
+    generate_config('src/ts/listener.ts', 'umd', 'Listener', false, false),
 ];

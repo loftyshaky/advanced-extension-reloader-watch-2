@@ -1,19 +1,19 @@
-import path from 'path';
+const path = require('path');
 
-import replace from '@rollup/plugin-replace';
-import typescript2 from 'rollup-plugin-typescript2';
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
-import transformPaths from 'ts-transform-paths';
-import nodeExternals from 'rollup-plugin-node-externals';
-import del from 'rollup-plugin-delete';
-import { terser } from 'rollup-plugin-terser';
-import license from 'rollup-plugin-license';
+const typescript = require('@rollup/plugin-typescript');
+const commonjs = require('@rollup/plugin-commonjs');
+const resolve = require('@rollup/plugin-node-resolve');
+const replace = require('@rollup/plugin-replace');
+const terser = require('@rollup/plugin-terser');
+const json = require('@rollup/plugin-json');
+const del = require('rollup-plugin-delete');
+const license = require('rollup-plugin-license');
 
+const { TscAlias } = require('./node_modules/@loftyshaky/shared-app/js/tsc_alias');
 const copy = require('./node_modules/@loftyshaky/shared-app/js/package/plugins/rollup-plugin-copy');
 const { Terser } = require('./node_modules/@loftyshaky/shared-app/js/package/terser');
 
+const tsc_alias = new TscAlias();
 const terserInst = new Terser();
 
 const generate_config = (input, format, name, delete_dist, generate_dependencies_file) => ({
@@ -49,17 +49,13 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
             "require('utf-8-validate')": 'null',
             delimiters: ['', ''],
         }),
-        typescript2({
-            rollupCommonJSResolveHack: true,
-            clean: true,
-            transformers: [transformPaths],
-        }),
+        typescript({ tsconfig: `./tsconfig_${format}.json` }),
+        tsc_alias.transform_aliases_to_relative_paths(),
         commonjs(),
         json({
             compact: true,
         }),
         resolve(),
-        nodeExternals(),
         copy({
             targets: [
                 {
@@ -98,7 +94,7 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
     ],
 });
 
-export default [
+module.exports = [
     generate_config(['src/ts/reloader.ts', 'src/ts/listener.ts'], 'es', undefined, true, true),
     generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false, false),
     generate_config('src/ts/listener.ts', 'umd', 'Listener', false, false),

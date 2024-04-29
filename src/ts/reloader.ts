@@ -5,7 +5,7 @@ import chokidar from 'chokidar';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import kill from 'kill-port';
-import { redBright } from 'colorette';
+import { redBright, yellowBright } from 'colorette';
 
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
@@ -33,25 +33,40 @@ export default class Reloader {
         Object.assign(this, obj);
 
         // kill process running on port
-        kill(this.port, 'tcp').then(() => {
-            const io = this.httpserver.listen(this.port);
-
-            //> probably never get to this point since now I use kill-port above
-            io.on('error', (error) => {
+        kill(this.port, 'tcp')
+            .then(() => {
+                this.listen();
+            })
+            .catch(() => {
                 // eslint-disable-next-line no-console
                 console.log(
-                    redBright(
-                        `[Advanced Extension Reloader Watch 2 error] Unable to connect to port ${this.port}.`,
+                    yellowBright(
+                        '\n[Advanced Extension Reloader Watch 2 warning] The "kill" method promise from the "kill-port" package was rejected. Note to the user: if Advanced Extension Reloader works as expected, please ignore this warning.',
                     ),
-                );
-                // eslint-disable-next-line no-console
-                console.log(error);
+                ); // see https://github.com/loftyshaky/clear-new-tab/issues/14 and https://github.com/loftyshaky/advanced-extension-reloader/issues/3
 
-                process.exit(1);
+                this.listen();
             });
-            //< probably never get to this point since now I use kill-port above
-        });
     }
+
+    private listen = (): void => {
+        const io = this.httpserver.listen(this.port);
+
+        //> probably never get to this point since now I use kill-port above
+        io.on('error', (error) => {
+            // eslint-disable-next-line no-console
+            console.log(
+                redBright(
+                    `[Advanced Extension Reloader Watch 2 error] Unable to connect to port ${this.port}.`,
+                ),
+            );
+            // eslint-disable-next-line no-console
+            console.log(error);
+
+            process.exit(1);
+        });
+        //< probably never get to this point since now I use kill-port above;
+    };
 
     public watch = ({
         callback,

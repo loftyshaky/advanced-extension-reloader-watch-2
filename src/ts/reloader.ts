@@ -5,7 +5,7 @@ import chokidar from 'chokidar';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import kill from 'kill-port';
-import { redBright, yellowBright } from 'colorette';
+import { redBright } from 'colorette';
 
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
@@ -38,12 +38,7 @@ export default class Reloader {
                 this.listen();
             })
             .catch(() => {
-                // eslint-disable-next-line no-console
-                console.log(
-                    yellowBright(
-                        '\n[Advanced Extension Reloader Watch 2 warning] The "kill" method promise from the "kill-port" package was rejected. Note to the user: if Advanced Extension Reloader works as expected, please ignore this warning.',
-                    ),
-                ); // see https://github.com/loftyshaky/clear-new-tab/issues/14 and https://github.com/loftyshaky/advanced-extension-reloader/issues/3
+                // Fix crash on linux due to "kill" method's promise from the "kill-port" package being rejected. See https://github.com/loftyshaky/clear-new-tab/issues/14 and https://github.com/loftyshaky/advanced-extension-reloader/issues/3
 
                 this.listen();
             });

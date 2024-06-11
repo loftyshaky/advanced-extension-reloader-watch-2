@@ -159,7 +159,7 @@ export default class Reloader {
 
                         if (!manifest_json_is_valid_2) {
                             if (play_sound) {
-                                this.play_error_notification();
+                                this.play_error_notification({ ext_id });
                             }
 
                             // eslint-disable-next-line no-console
@@ -213,8 +213,10 @@ export default class Reloader {
         return manifest_json_is_valid;
     };
 
-    private play_error_notification = (): void => {
-        this.io.sockets.emit('play_error_notification');
+    private play_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
+        this.io.sockets.emit('play_error_notification', {
+            ext_id,
+        });
     };
 
     private check_if_matched_filename = ({

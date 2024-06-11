@@ -66,6 +66,10 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
                     src: 'LICENSE.md',
                     dest: 'dist',
                 },
+                {
+                    src: 'README.md',
+                    dest: 'dist',
+                },
             ],
             hook: 'writeBundle',
         }),

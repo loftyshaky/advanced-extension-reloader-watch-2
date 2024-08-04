@@ -1,5 +1,6 @@
 import path from 'path';
-import { isNil, isEmpty } from 'lodash';
+import isNil from 'lodash/isNil';
+import isEmpty from 'lodash/isEmpty';
 import fs from 'fs-extra';
 import chokidar from 'chokidar';
 import { createServer } from 'http';

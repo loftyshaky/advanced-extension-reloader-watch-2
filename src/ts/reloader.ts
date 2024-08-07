@@ -29,6 +29,9 @@ export default class Reloader {
     private changed_files: string[] = [];
     private first_reload_completed = false;
     private reload_attempts: number = 0;
+    private listening: boolean = false;
+    private attempted_to_reload_once_while_listening = false;
+    private started_to_listen_delay = 750;
 
     public constructor(obj: any) {
         Object.assign(this, obj);
@@ -46,7 +49,13 @@ export default class Reloader {
     }
 
     private listen = (): void => {
-        const io = this.httpserver.listen(this.port);
+        const io = this.httpserver.listen(this.port, () => {
+            this.listening = true;
+
+            setTimeout(() => {
+                this.started_to_listen_delay = 100;
+            }, this.started_to_listen_delay); // Delay is 1.5 the reconnectionDelayMax: 500 in the Advanced Extension Reloader extension. It's needed to make sure that the Advanced Extension Reloader is connected to server before sending a reload message.
+        });
 
         //> probably never get to this point since now I use kill-port above
         io.on('error', (error) => {
@@ -113,11 +122,13 @@ export default class Reloader {
         let manifest_json_is_valid: boolean = false;
 
         if (
-            isEmpty(this.changed_files) &&
-            this.first_reload_completed &&
-            this.reload_attempts <= 50
+            this.reload_attempts <= 50 &&
+            ((isEmpty(this.changed_files) && this.first_reload_completed) ||
+                !this.listening ||
+                !this.attempted_to_reload_once_while_listening)
         ) {
             this.reload_attempts += 1;
+            this.attempted_to_reload_once_while_listening = this.listening;
 
             setTimeout(() => {
                 this.reload({
@@ -132,7 +143,7 @@ export default class Reloader {
                     all_tabs_paths,
                     one_tab_paths,
                 });
-            }, 100);
+            }, this.started_to_listen_delay);
         } else {
             this.first_reload_completed = true;
             this.reload_attempts = 0;

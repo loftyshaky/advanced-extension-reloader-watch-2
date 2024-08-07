@@ -31,7 +31,7 @@ export default class Reloader {
     private reload_attempts: number = 0;
     private listening: boolean = false;
     private attempted_to_reload_once_while_listening = false;
-    private started_to_listen_delay = 750;
+    private reload_delay = 750;
 
     public constructor(obj: any) {
         Object.assign(this, obj);
@@ -53,8 +53,8 @@ export default class Reloader {
             this.listening = true;
 
             setTimeout(() => {
-                this.started_to_listen_delay = 100;
-            }, this.started_to_listen_delay); // Delay is 1.5 the reconnectionDelayMax: 500 in the Advanced Extension Reloader extension. It's needed to make sure that the Advanced Extension Reloader is connected to server before sending a reload message.
+                this.reload_delay = 100;
+            }, this.reload_delay); // Delay is 1.5 the reconnectionDelayMax: 500 in the Advanced Extension Reloader extension. It's needed to make sure that the Advanced Extension Reloader is connected to server before sending a reload message.
         });
 
         //> probably never get to this point since now I use kill-port above
@@ -143,7 +143,7 @@ export default class Reloader {
                     all_tabs_paths,
                     one_tab_paths,
                 });
-            }, this.started_to_listen_delay);
+            }, this.reload_delay);
         } else {
             this.first_reload_completed = true;
             this.reload_attempts = 0;

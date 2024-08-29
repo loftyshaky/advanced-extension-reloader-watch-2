@@ -107,21 +107,25 @@ export default class Reloader {
         }
     };
 
-    public reload = ({
-        ext_id,
-        hard = true,
-        all_tabs = false,
-        play_sound = false,
-        after_reload_delay = 1000,
-        manifest_path = false,
-        hard_paths = [],
-        soft_paths = [],
-        all_tabs_paths = [],
-        one_tab_paths = [],
-    }: Options = {}): boolean => {
+    public reload = (
+        {
+            ext_id,
+            hard = true,
+            all_tabs = false,
+            play_sound = false,
+            after_reload_delay = 1000,
+            manifest_path = false,
+            hard_paths = [],
+            soft_paths = [],
+            all_tabs_paths = [],
+            one_tab_paths = [],
+        }: Options = {},
+        reloading_from_advanced_extension_reloader_watch_1: boolean = false,
+    ): boolean => {
         let manifest_json_is_valid: boolean = false;
 
         if (
+            !reloading_from_advanced_extension_reloader_watch_1 &&
             this.reload_attempts <= 50 &&
             ((isEmpty(this.changed_files) && this.first_reload_completed) ||
                 !this.listening ||

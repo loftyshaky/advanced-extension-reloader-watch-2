@@ -112,7 +112,7 @@ export default class Reloader {
             ext_id,
             hard = true,
             all_tabs = false,
-            play_sound = false,
+            play_notifications = false,
             after_reload_delay = 1000,
             manifest_path = false,
             hard_paths = [],
@@ -139,7 +139,7 @@ export default class Reloader {
                     ext_id,
                     hard,
                     all_tabs,
-                    play_sound,
+                    play_notifications,
                     after_reload_delay,
                     manifest_path,
                     hard_paths,
@@ -174,8 +174,8 @@ export default class Reloader {
                         manifest_json_is_valid_2 = manifest_json !== null;
 
                         if (!manifest_json_is_valid_2) {
-                            if (play_sound) {
-                                this.play_error_notification({ ext_id });
+                            if (play_notifications) {
+                                this.play_manifest_error_notification({ ext_id });
                             }
 
                             // eslint-disable-next-line no-console
@@ -218,7 +218,7 @@ export default class Reloader {
                     ext_id,
                     hard: hard_final,
                     all_tabs: all_tabs_final,
-                    play_sound,
+                    play_notifications,
                     after_reload_delay,
                 });
             }
@@ -229,8 +229,14 @@ export default class Reloader {
         return manifest_json_is_valid;
     };
 
-    private play_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
+    public play_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
         this.io.sockets.emit('play_error_notification', {
+            ext_id,
+        });
+    };
+
+    public play_manifest_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
+        this.io.sockets.emit('play_manifest_error_notification', {
             ext_id,
         });
     };

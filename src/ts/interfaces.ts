@@ -2,7 +2,7 @@ export interface Options {
     ext_id?: string;
     hard?: boolean;
     all_tabs?: boolean;
-    play_sound?: boolean;
+    play_notifications?: boolean;
     after_reload_delay?: number;
     manifest_path?: boolean | string;
     hard_paths?: string[];

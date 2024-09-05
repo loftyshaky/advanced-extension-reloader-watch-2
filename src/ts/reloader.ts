@@ -95,7 +95,7 @@ export default class Reloader {
                 .on('add', watch_callback)
                 .on('change', watch_callback)
                 .on('unlink', watch_callback);
-        } catch (error_object) {
+        } catch {
             // eslint-disable-next-line no-console
             console.log(
                 redBright(

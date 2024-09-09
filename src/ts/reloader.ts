@@ -113,7 +113,10 @@ export default class Reloader {
             hard = true,
             all_tabs = false,
             play_notifications = false,
+            reload_throttle_delay = 500,
             after_reload_delay = 1000,
+            between_reloads_delay = 1000,
+            listen_message_response_timeout = 400,
             manifest_path = false,
             hard_paths = [],
             soft_paths = [],
@@ -140,7 +143,10 @@ export default class Reloader {
                     hard,
                     all_tabs,
                     play_notifications,
+                    reload_throttle_delay,
                     after_reload_delay,
+                    between_reloads_delay,
+                    listen_message_response_timeout,
                     manifest_path,
                     hard_paths,
                     soft_paths,
@@ -219,7 +225,10 @@ export default class Reloader {
                     hard: hard_final,
                     all_tabs: all_tabs_final,
                     play_notifications,
+                    reload_throttle_delay,
                     after_reload_delay,
+                    between_reloads_delay,
+                    listen_message_response_timeout,
                 });
             }
 

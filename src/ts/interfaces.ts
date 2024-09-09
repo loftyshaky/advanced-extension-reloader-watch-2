@@ -1,11 +1,11 @@
 export interface Options {
-    ext_id?: string;
+    extension_id?: string;
     hard?: boolean;
     all_tabs?: boolean;
     play_notifications?: boolean;
-    reload_throttle_delay?: number;
-    after_reload_delay?: number;
-    between_reloads_delay?: number;
+    min_interval_between_extension_reloads?: number;
+    delay_after_extension_reload?: number;
+    delay_after_tab_reload?: number;
     listen_message_response_timeout?: number;
     manifest_path?: boolean | string;
     hard_paths?: string[];

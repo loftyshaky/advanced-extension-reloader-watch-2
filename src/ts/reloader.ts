@@ -109,13 +109,13 @@ export default class Reloader {
 
     public reload = (
         {
-            ext_id,
+            extension_id,
             hard = true,
             all_tabs = false,
             play_notifications = false,
-            reload_throttle_delay = 500,
-            after_reload_delay = 1000,
-            between_reloads_delay = 1000,
+            min_interval_between_extension_reloads = 500,
+            delay_after_extension_reload = 1000,
+            delay_after_tab_reload = 1000,
             listen_message_response_timeout = 400,
             manifest_path = false,
             hard_paths = [],
@@ -139,13 +139,13 @@ export default class Reloader {
 
             setTimeout(() => {
                 this.reload({
-                    ext_id,
+                    extension_id,
                     hard,
                     all_tabs,
                     play_notifications,
-                    reload_throttle_delay,
-                    after_reload_delay,
-                    between_reloads_delay,
+                    min_interval_between_extension_reloads,
+                    delay_after_extension_reload,
+                    delay_after_tab_reload,
                     listen_message_response_timeout,
                     manifest_path,
                     hard_paths,
@@ -181,7 +181,7 @@ export default class Reloader {
 
                         if (!manifest_json_is_valid_2) {
                             if (play_notifications) {
-                                this.play_manifest_error_notification({ ext_id });
+                                this.play_manifest_error_notification({ extension_id });
                             }
 
                             // eslint-disable-next-line no-console
@@ -221,13 +221,13 @@ export default class Reloader {
 
             if (manifest_json_is_valid) {
                 this.io.sockets.emit('reload_app', {
-                    ext_id,
+                    extension_id,
                     hard: hard_final,
                     all_tabs: all_tabs_final,
                     play_notifications,
-                    reload_throttle_delay,
-                    after_reload_delay,
-                    between_reloads_delay,
+                    min_interval_between_extension_reloads,
+                    delay_after_extension_reload,
+                    delay_after_tab_reload,
                     listen_message_response_timeout,
                 });
             }
@@ -238,15 +238,17 @@ export default class Reloader {
         return manifest_json_is_valid;
     };
 
-    public play_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
+    public play_error_notification = ({ extension_id }: { extension_id?: string } = {}): void => {
         this.io.sockets.emit('play_error_notification', {
-            ext_id,
+            extension_id,
         });
     };
 
-    public play_manifest_error_notification = ({ ext_id }: { ext_id?: string } = {}): void => {
+    public play_manifest_error_notification = ({
+        extension_id,
+    }: { extension_id?: string } = {}): void => {
         this.io.sockets.emit('play_manifest_error_notification', {
-            ext_id,
+            extension_id,
         });
     };
 

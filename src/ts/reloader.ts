@@ -115,7 +115,7 @@ export default class Reloader {
             play_notifications = false,
             min_interval_between_extension_reloads = 500,
             delay_after_extension_reload = 1000,
-            delay_after_tab_reload = 1000,
+            delay_after_tab_reload = 2000,
             listen_message_response_timeout = 400,
             manifest_path = false,
             hard_paths = [],

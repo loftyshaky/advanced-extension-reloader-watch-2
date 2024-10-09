@@ -1,3 +1,5 @@
+import { allowed_advanced_extension_reloader_ids } from './allowed_advanced_extension_reloader_ids';
+
 export default class Listener {
     private gl = self as any;
     private we =
@@ -11,11 +13,15 @@ export default class Listener {
         this.we.runtime.onMessageExternal.addListener(
             (msg: any, sender: any, sendResponse: any): any => {
                 const msg_str: string = msg.msg;
+                const sender_is_advanced_extension_reloader_extension: boolean =
+                    allowed_advanced_extension_reloader_ids.includes(sender.id);
 
-                if (msg_str === `reload_extension_${this.advanced_extension_reloader_id}`) {
-                    sendResponse(`reload_triggered_${this.advanced_extension_reloader_id}`);
+                if (sender_is_advanced_extension_reloader_extension) {
+                    if (msg_str === 'reload_extension') {
+                        sendResponse(`reload_triggered_${this.advanced_extension_reloader_id}`);
 
-                    this.we.runtime.reload();
+                        this.we.runtime.reload();
+                    }
                 }
             },
         );

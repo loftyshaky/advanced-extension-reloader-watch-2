@@ -10,6 +10,7 @@ import { redBright } from 'colorette';
 
 // eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
+import { allowed_advanced_extension_reloader_origins } from './allowed_advanced_extension_reloader_ids';
 
 export default class Reloader {
     private port: number = 7220;
@@ -18,11 +19,7 @@ export default class Reloader {
     private httpserver = createServer();
     private io = new Server(this.httpserver, {
         cors: {
-            origin: [
-                'chrome-extension://hmhmmmajoblhmohkmfjeoamhdpodihlg',
-                'chrome-extension://hagknokdofkmojolcpbddjfdjhnjdkae', // chrome
-                'chrome-extension://bcpgohifjmmcoiemghdamamlkbcbgifg', // edge
-            ],
+            origin: allowed_advanced_extension_reloader_origins,
         },
     });
 

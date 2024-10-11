@@ -99,7 +99,8 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
 });
 
 module.exports = [
-    generate_config(['src/ts/reloader.ts', 'src/ts/listener.ts'], 'es', undefined, true, true),
+    generate_config('src/ts/reloader.ts', 'es', undefined, true, true),
+    generate_config('src/ts/listener.ts', 'es', undefined, false, true),
     generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false, false),
     generate_config('src/ts/listener.ts', 'umd', 'Listener', false, false),
 ];

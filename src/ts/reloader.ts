@@ -109,6 +109,7 @@ export default class Reloader {
             extension_id,
             hard = true,
             all_tabs = false,
+            open_popup = false,
             play_notifications = false,
             min_interval_between_extension_reloads = 500,
             delay_after_extension_reload = 1000,
@@ -119,6 +120,7 @@ export default class Reloader {
             soft_paths = [],
             all_tabs_paths = [],
             one_tab_paths = [],
+            open_popup_paths = [],
         }: Options = {},
         reloading_from_advanced_extension_reloader_watch_1: boolean = false,
     ): boolean => {
@@ -139,6 +141,7 @@ export default class Reloader {
                     extension_id,
                     hard,
                     all_tabs,
+                    open_popup,
                     play_notifications,
                     min_interval_between_extension_reloads,
                     delay_after_extension_reload,
@@ -149,6 +152,7 @@ export default class Reloader {
                     soft_paths,
                     all_tabs_paths,
                     one_tab_paths,
+                    open_popup_paths,
                 });
             }, this.reload_delay);
         } else {
@@ -214,6 +218,11 @@ export default class Reloader {
                       paths: all_tabs_paths,
                   });
 
+            const open_popup_final = this.check_if_need_to_open_popup({
+                val: open_popup,
+                paths: open_popup_paths,
+            });
+
             manifest_json_is_valid = check_if_manifest_json_is_valid();
 
             if (manifest_json_is_valid) {
@@ -221,6 +230,7 @@ export default class Reloader {
                     extension_id,
                     hard: hard_final,
                     all_tabs: all_tabs_final,
+                    open_popup: open_popup_final,
                     play_notifications,
                     min_interval_between_extension_reloads,
                     delay_after_extension_reload,
@@ -256,14 +266,37 @@ export default class Reloader {
         val: boolean;
         paths: string[];
     }): boolean => {
-        const match_val = this.changed_files.some((file) =>
-            paths.some((file_name) => file.includes(file_name)),
-        );
+        const match_val = this.match_val({ paths });
 
         if (match_val && paths.length !== 0) {
             return !val;
         }
 
         return val;
+    };
+
+    private check_if_need_to_open_popup = ({
+        val,
+        paths,
+    }: {
+        val: boolean;
+        paths: string[];
+    }): boolean => {
+        const match_val = this.match_val({ paths });
+        const open_popup_on_cond: boolean = val && paths.length !== 0;
+
+        if (open_popup_on_cond) {
+            return val && match_val && paths.length !== 0;
+        }
+
+        return val;
+    };
+
+    private match_val = ({ paths }: { paths: string[] }): boolean => {
+        const match_val = this.changed_files.some((file) =>
+            paths.some((file_name) => file.includes(file_name)),
+        );
+
+        return match_val;
     };
 }

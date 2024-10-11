@@ -7,8 +7,6 @@ export default class Listener {
             ? this.gl.chrome
             : this.gl.browser;
 
-    private advanced_extension_reloader_id: string = 'u6Pgzb39sN0';
-
     public listen = () => {
         this.we.runtime.onMessageExternal.addListener(
             (msg: any, sender: any, sendResponse: any): any => {
@@ -18,9 +16,23 @@ export default class Listener {
 
                 if (sender_is_advanced_extension_reloader_extension) {
                     if (msg_str === 'reload_extension') {
-                        sendResponse(`reload_triggered_${this.advanced_extension_reloader_id}`);
+                        sendResponse(true);
 
                         this.we.runtime.reload();
+                    } else if (msg_str === 'open_popup') {
+                        sendResponse(true);
+
+                        this.we.action.openPopup(undefined, () => {
+                            // eslint-disable-next-line no-empty, prettier/prettier
+                            if (this.we.runtime.lastError) {}
+                        });
+                    } else if (msg_str === 'check_if_popup_is_open') {
+                        this.we.runtime.getContexts(
+                            { contextTypes: ['POPUP'] },
+                            (contexts: any) => {
+                                sendResponse(contexts.length !== 0);
+                            },
+                        );
                     }
                 }
             },

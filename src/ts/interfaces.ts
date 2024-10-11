@@ -2,6 +2,7 @@ export interface Options {
     extension_id?: string;
     hard?: boolean;
     all_tabs?: boolean;
+    open_popup?: boolean;
     play_notifications?: boolean;
     min_interval_between_extension_reloads?: number;
     delay_after_extension_reload?: number;
@@ -12,4 +13,5 @@ export interface Options {
     soft_paths?: string[];
     all_tabs_paths?: string[];
     one_tab_paths?: string[];
+    open_popup_paths?: string[];
 }

@@ -1,17 +1,24 @@
-const path = require('path');
+import path from 'path';
 
-const typescript = require('@rollup/plugin-typescript');
-const commonjs = require('@rollup/plugin-commonjs');
-const resolve = require('@rollup/plugin-node-resolve');
-const replace = require('@rollup/plugin-replace');
-const terser = require('@rollup/plugin-terser');
-const json = require('@rollup/plugin-json');
-const del = require('rollup-plugin-delete');
-const license = require('rollup-plugin-license');
+// eslint-disable-next-line import/no-extraneous-dependencies
+import appRoot from 'app-root-path';
+import typescript from '@rollup/plugin-typescript';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import terser from '@rollup/plugin-terser';
+import json from '@rollup/plugin-json';
+import del from 'rollup-plugin-delete';
+import license from 'rollup-plugin-license';
 
-const { TscAlias } = require('./node_modules/@loftyshaky/shared-app/js/tsc_alias');
-const copy = require('./node_modules/@loftyshaky/shared-app/js/package/plugins/rollup-plugin-copy');
-const { Terser } = require('./node_modules/@loftyshaky/shared-app/js/package/terser');
+// eslint-disable-next-line import/extensions
+import { TscAlias } from '@loftyshaky/shared-app/js/tsc_alias.js';
+// eslint-disable-next-line import/extensions
+import copy from '@loftyshaky/shared-app/js/package/plugins/rollup-plugin-copy.js';
+// eslint-disable-next-line import/extensions
+import { Terser } from '@loftyshaky/shared-app/js/package/terser.js';
+
+const app_root = appRoot.path;
 
 const tsc_alias = new TscAlias();
 const terserInst = new Terser();
@@ -41,6 +48,9 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
     },
     external: ['supports-color', 'bufferutil', 'utf-8-validate'],
     plugins: [
+        typescript({ tsconfig: `./tsconfig_${format}.json` }),
+        commonjs(),
+        resolve(),
         replace({
             'window.location.protocol': 'null',
             "document.querySelector('title');": 'null',
@@ -49,17 +59,22 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
             "require('utf-8-validate')": 'null',
             delimiters: ['', ''],
         }),
-        typescript({ tsconfig: `./tsconfig_${format}.json` }),
         tsc_alias.transform_aliases_to_relative_paths(),
-        commonjs(),
         json({
             compact: true,
         }),
-        resolve(),
         copy({
             targets: [
                 {
-                    src: 'json/package.json',
+                    src: 'package.json',
+                    dest: 'dist',
+                },
+                {
+                    src: `json/${format}/package.json`,
+                    dest: `dist/${format}`,
+                },
+                {
+                    src: 'src/ts/index.d.ts',
                     dest: 'dist',
                 },
                 {
@@ -84,12 +99,12 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
         ...[
             generate_dependencies_file
                 ? license({
-                      cwd: path.join(__dirname),
+                      cwd: path.join(app_root),
                       banner: "Copyright <%= moment().format('YYYY') %>",
                       thirdParty: {
                           includePrivate: true,
                           output: {
-                              file: path.join(__dirname, 'dist', 'dependencies.txt'),
+                              file: path.join(app_root, 'dist', 'dependencies.txt'),
                           },
                       },
                   })
@@ -98,9 +113,9 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
     ],
 });
 
-module.exports = [
-    generate_config('src/ts/reloader.ts', 'es', undefined, true, true),
-    generate_config('src/ts/listener.ts', 'es', undefined, false, true),
-    generate_config('src/ts/reloader.ts', 'umd', 'Reloader', false, false),
+export default [
+    generate_config('src/ts/reloader.ts', 'umd', 'Reloader', true, true),
     generate_config('src/ts/listener.ts', 'umd', 'Listener', false, false),
+    generate_config('src/ts/reloader.ts', 'es', undefined, false, false),
+    generate_config('src/ts/listener.ts', 'es', undefined, false, false),
 ];

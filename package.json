@@ -23,6 +23,7 @@
         "@types/socket.io": "^3.0.2",
         "@typescript-eslint/eslint-plugin": "^8.4.0",
         "@typescript-eslint/parser": "^8.4.0",
+        "app-root-path": "^3.1.0",
         "del": "^7.1.0",
         "eslint": "^8.57.0",
         "eslint-config-airbnb": "^19.0.4",

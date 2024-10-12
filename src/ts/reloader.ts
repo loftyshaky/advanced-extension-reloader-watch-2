@@ -69,11 +69,19 @@ export default class Reloader {
         //< probably never get to this point since now I use kill-port above;
     };
 
-    public watch = (): void => {
+    public watch = ({
+        callback,
+    }: {
+        callback?: () => void; // Used in advanced-extension-reloader-watch-1
+    } = {}): void => {
         try {
             const watch_callback = (file_path: string | undefined): void => {
                 if (!isNil(file_path)) {
                     this.changed_files.push(path.resolve(file_path));
+
+                    if (!isNil(callback)) {
+                        callback();
+                    }
                 }
             };
 

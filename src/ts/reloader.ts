@@ -8,7 +8,6 @@ import { Server } from 'socket.io';
 import kill from 'kill-port';
 import { redBright } from 'colorette';
 
-// eslint-disable-next-line import/extensions
 import { Options } from './interfaces';
 import { allowed_advanced_extension_reloader_origins } from './allowed_advanced_extension_reloader_ids';
 
@@ -30,9 +29,9 @@ export default class Reloader {
     private attempted_to_reload_once_while_listening = false;
     private reload_delay = 750;
 
-    public constructor(obj: any) {
-        Object.assign(this, obj);
-
+    public constructor(options?: { port?: number; watch_dir?: string }) {
+        this.port = options && options.port ? options.port : this.port;
+        this.watch_dir = options && options.watch_dir ? options.watch_dir : this.watch_dir;
         // kill process running on port
         kill(this.port, 'tcp')
             .then(() => {
@@ -70,19 +69,11 @@ export default class Reloader {
         //< probably never get to this point since now I use kill-port above;
     };
 
-    public watch = ({
-        callback,
-    }: {
-        callback?: () => void;
-    } = {}): void => {
+    public watch = (): void => {
         try {
             const watch_callback = (file_path: string | undefined): void => {
                 if (!isNil(file_path)) {
                     this.changed_files.push(path.resolve(file_path));
-
-                    if (!isNil(callback)) {
-                        callback();
-                    }
                 }
             };
 
@@ -251,7 +242,7 @@ export default class Reloader {
         });
     };
 
-    public play_manifest_error_notification = ({
+    private play_manifest_error_notification = ({
         extension_id,
     }: { extension_id?: string } = {}): void => {
         this.io.sockets.emit('play_manifest_error_notification', {

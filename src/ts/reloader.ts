@@ -100,7 +100,7 @@ export default class Reloader {
             extension_id,
             hard = true,
             all_tabs = false,
-            open_popup = false,
+            always_open_popup = false,
             play_notifications = false,
             min_interval_between_extension_reloads = 500,
             delay_after_extension_reload = 1000,
@@ -111,7 +111,7 @@ export default class Reloader {
             soft_paths = [],
             all_tabs_paths = [],
             one_tab_paths = [],
-            open_popup_paths = [],
+            always_open_popup_paths = [],
         }: Options = {},
         reloading_from_advanced_extension_reloader_watch_1: boolean = false,
     ): boolean => {
@@ -132,7 +132,7 @@ export default class Reloader {
                     extension_id,
                     hard,
                     all_tabs,
-                    open_popup,
+                    always_open_popup,
                     play_notifications,
                     min_interval_between_extension_reloads,
                     delay_after_extension_reload,
@@ -143,7 +143,7 @@ export default class Reloader {
                     soft_paths,
                     all_tabs_paths,
                     one_tab_paths,
-                    open_popup_paths,
+                    always_open_popup_paths,
                 });
             }, this.reload_delay);
         } else {
@@ -209,9 +209,9 @@ export default class Reloader {
                       paths: all_tabs_paths,
                   });
 
-            const open_popup_final = this.check_if_need_to_open_popup({
-                val: open_popup,
-                paths: open_popup_paths,
+            const always_open_popup_final = this.check_if_need_to_open_popup({
+                val: always_open_popup,
+                paths: always_open_popup_paths,
             });
 
             manifest_json_is_valid = check_if_manifest_json_is_valid();
@@ -221,7 +221,7 @@ export default class Reloader {
                     extension_id,
                     hard: hard_final,
                     all_tabs: all_tabs_final,
-                    open_popup: open_popup_final,
+                    always_open_popup: always_open_popup_final,
                     play_notifications,
                     min_interval_between_extension_reloads,
                     delay_after_extension_reload,

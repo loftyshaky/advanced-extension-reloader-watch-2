@@ -4,7 +4,7 @@
         "prod": "rollup -c --environment mode:production",
         "format": "prettier src/**/*.ts --write",
         "lint": "eslint **/*.js **/*.ts --fix",
-        "fix": "prettier --config .prettierrc.js rollup.config.js **/*.ts --write & eslint **/*.ts --fix"
+        "fix": "prettier --config .prettierrc.cjs rollup.config.js **/*.ts --write & eslint **/*.ts --fix"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.25.1",

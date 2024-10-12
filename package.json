@@ -1,4 +1,6 @@
 {
+    "name": "advanced-extension-reloader-watch-2",
+    "type": "module",
     "scripts": {
         "dev": "rollup -c --watch --environment mode:development",
         "prod": "rollup -c --environment mode:production",
@@ -26,7 +28,7 @@
         "eslint-config-airbnb": "^19.0.4",
         "eslint-config-prettier": "^9.1.0",
         "eslint-import-resolver-typescript": "^3.6.3",
-        "eslint-plugin-import": "^2.30.0",
+        "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-json": "^4.0.1",
         "eslint-plugin-jsx-a11y": "^6.10.0",
         "eslint-plugin-local-rules": "^3.0.2",

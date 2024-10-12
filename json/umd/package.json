@@ -8,6 +8,7 @@
         "type": "git",
         "url": "https://github.com/loftyshaky/advanced-extension-reloader-watch-2.git"
     },
+    "types": "reloader.d.ts",
     "scripts": {
         "pub": "npm publish --access public"
     }

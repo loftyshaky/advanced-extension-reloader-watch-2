@@ -66,7 +66,7 @@ const generate_config = (input, format, name, delete_dist, generate_dependencies
         copy({
             targets: [
                 {
-                    src: 'package.json',
+                    src: 'json/es/package.json',
                     dest: 'dist',
                 },
                 {

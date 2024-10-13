@@ -32,6 +32,7 @@ export default class Reloader {
     public constructor(options?: { port?: number; watch_dir?: string }) {
         this.port = options && options.port ? options.port : this.port;
         this.watch_dir = options && options.watch_dir ? options.watch_dir : this.watch_dir;
+
         // kill process running on port
         kill(this.port, 'tcp')
             .then(() => {
@@ -165,32 +166,26 @@ export default class Reloader {
                 if (manifest_path !== false) {
                     const manifest_path_absolute: string =
                         typeof manifest_path === 'string'
-                            ? manifest_path
+                            ? path.normalize(manifest_path)
                             : path.resolve(this.watch_dir, 'manifest.json');
-                    const files: string[] = isEmpty(this.changed_files)
-                        ? [manifest_path_absolute]
-                        : this.changed_files;
-                    const changed_manifest_json: boolean = files.includes(manifest_path_absolute);
 
-                    if (changed_manifest_json) {
-                        const manifest_json: any = fs.readJsonSync(manifest_path_absolute, {
-                            throws: false,
-                        });
+                    const manifest_json: any = fs.readJsonSync(manifest_path_absolute, {
+                        throws: false,
+                    });
 
-                        manifest_json_is_valid_2 = manifest_json !== null;
+                    manifest_json_is_valid_2 = manifest_json !== null;
 
-                        if (!manifest_json_is_valid_2) {
-                            if (play_notifications) {
-                                this.play_manifest_error_notification({ extension_id });
-                            }
-
-                            // eslint-disable-next-line no-console
-                            console.log(
-                                redBright(
-                                    '[Advanced Extension Reloader Watch 2 error] manifest.json is not valid. Extension was not reloaded.',
-                                ),
-                            );
+                    if (!manifest_json_is_valid_2) {
+                        if (play_notifications) {
+                            this.play_manifest_error_notification({ extension_id });
                         }
+
+                        // eslint-disable-next-line no-console
+                        console.log(
+                            redBright(
+                                '[Advanced Extension Reloader Watch 2 error] manifest.json is not valid. Extension was not reloaded.',
+                            ),
+                        );
                     }
                 }
 
@@ -265,7 +260,7 @@ export default class Reloader {
         val: boolean;
         paths: string[];
     }): boolean => {
-        const match_val = this.match_val({ paths });
+        const match_val = this.match_val({ paths_1: this.changed_files, paths_2: paths });
 
         if (match_val && paths.length !== 0) {
             return !val;
@@ -281,7 +276,7 @@ export default class Reloader {
         val: boolean;
         paths: string[];
     }): boolean => {
-        const match_val = this.match_val({ paths });
+        const match_val = this.match_val({ paths_1: this.changed_files, paths_2: paths });
         const open_popup_on_cond: boolean = val && paths.length !== 0;
 
         if (open_popup_on_cond) {
@@ -291,9 +286,15 @@ export default class Reloader {
         return val;
     };
 
-    private match_val = ({ paths }: { paths: string[] }): boolean => {
-        const match_val = this.changed_files.some((file) =>
-            paths.some((file_name) => file.includes(file_name)),
+    private match_val = ({
+        paths_1,
+        paths_2,
+    }: {
+        paths_1: string[];
+        paths_2: string[];
+    }): boolean => {
+        const match_val = paths_1.some((path_1) =>
+            paths_2.some((path_2) => path.normalize(path_1).includes(path.normalize(path_2))),
         );
 
         return match_val;
